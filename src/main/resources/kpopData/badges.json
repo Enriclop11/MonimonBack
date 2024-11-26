@@ -1,0 +1,22 @@
+{
+  "badges": [
+    {
+      "name" : "Misamo",
+      "description" : "Tienes todas las cartas de Misamo",
+      "image" : "https://static.wikia.nocookie.net/kpop/images/c/ca/Misamo_para_Masterpiece.jpg/revision/latest?cb=20240106224417&path-prefix=es",
+      "requirements" : [
+          "137", "135", "134"
+      ],
+      "rarity" : "4"
+    },
+    {
+      "name" : "Twice",
+      "description" : "Tienes todas las cartas de Twice",
+      "image" : "https://kpopping.com/documents/a2/0/850/TWICE-fullPicture(38).webp?v=1f0eb",
+      "requirements" : [
+        "134", "135", "136", "137", "138", "139", "140"
+      ],
+      "rarity" : "5"
+    }
+  ]
+}

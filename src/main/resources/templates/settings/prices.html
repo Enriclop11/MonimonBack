@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/settings/prices.css}">
+</head>
+<body>
+
+<form action="/settings/prices" method="post" th:object="${prices}">
+
+  <div>
+    <label for="superballPrice">Superball Price</label>
+    <input type="number" name="superballPrice" id="superballPrice" th:value="${prices.getSuperballPrice()}">
+  </div>
+
+    <div>
+        <label for="ultraballPrice">Ultraball Price</label>
+        <input type="number" name="ultraballPrice" id="ultraballPrice" th:value="${prices.getUltraballPrice()}">
+    </div>
+
+    <div>
+        <label for="masterballPrice">Masterball Price</label>
+        <input type="number" name="masterballPrice" id="masterballPrice" th:value="${prices.getMasterballPrice()}">
+    </div>
+
+  <input type="submit" value="Save">
+
+</form>
+
+</body>
+</html>

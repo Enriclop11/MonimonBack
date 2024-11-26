@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Settings</title>
+    <link rel="stylesheet" th:href="@{/css/settings/admin.css}">
+</head>
+<body>
+
+<!-- form to edit admin -->
+<form action="/settings/admin" method="post" th:object="${adminUser}">
+    <div>
+        <label for="username">Admin Name</label>
+        <input type="text" name="username" id="username" th:value="${adminUser.getUsername()}">
+    </div>
+
+    <div>
+        <label for="password">Admin Password</label>
+        <input type="password" name="password" id="password">
+    </div>
+
+    <input type="submit" value="Save">
+
+</form>
+</body>
+</html>

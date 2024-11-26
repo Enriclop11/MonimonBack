@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Commands</title>
+    <link rel="stylesheet" th:href="@{/css/settings/commands.css}">
+
+</head>
+<body>
+
+ <h2 class="text-center">Commands</h2>
+
+ <div class="command" th:each="command : ${commands}">
+        <form action="/settings/commands" method="post" th:object="${command}">
+            <div>
+                <h3 th:text="${command.getName()}"></h3>
+            </div>
+
+            <input type="hidden" name="name" th:value="${command.getName()}">
+
+            <div>
+                <label for="customName">Custom Name</label>
+                <input type="text" name="customName" id="customName" th:value="${command.getCustomName()}">
+            </div>
+
+            <div>
+                <label for="active">Active</label>
+                <input type="checkbox" name="active" id="active" th:checked="${command.isActive()}">
+            </div>
+
+            <input type="submit" value="Save">
+        </form>
+
+ </div>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="stylesheet" th:href="@{/css/settings/settings.css}">
+</head>
+<body>
+
+<h1>Settings</h1>
+
+<form action="/settings" method="post" th:object="${settings}">
+
+    <div class="spawn-settings" >
+        <h3>Spawn Settings</h3>
+
+        <label for="cdMinutes">Cooldown Minutes Min</label>
+        <input type="number" name="cdMinutes" id="cdMinutes" th:value="${settings.getCdMinutes()}">
+
+        <br>
+
+        <label for="maxCdMinutes">Cooldown Minutes Max</label>
+        <input type="number" name="maxCdMinutes" id="maxCdMinutes" th:value="${settings.getMaxCdMinutes()}">
+
+        <br>
+
+        <label for="spawnActive">Spawn Active</label>
+        <input type="checkbox" name="spawnActive" id="spawnActive" th:checked="${settings.isSpawnActive()}">
+    </div>
+
+    <div class="Connection Settings">
+        <h3>Connection Settings</h3>
+
+        <label for="channelName">Channel Name</label>
+        <input type="text" name="channelName" id="channelName" th:value="${settings.getChannelName()}" required>
+
+        <br>
+
+        <label for="oauthTokenChannel">Channel Token</label>
+        <input type="text" name="oauthTokenChannel" id="oauthTokenChannel" th:required="${!settings.isHaveChannelToken()}">
+
+        <br>
+        <br>
+
+        <label for="botUsername">Bot Username</label>
+        <input type="text" name="botUsername" id="botUsername" th:value="${settings.getBotUsername()}" required>
+
+        <br>
+
+        <label for="oauthTokenBot">Bot Token</label>
+        <input type="text" name="oauthTokenBot" id="oauthTokenBot" th:required="${!settings.isHaveBotToken()}">
+
+        <br>
+        <br>
+
+        <label for="discordToken">Discord Token</label>
+        <input type="text" name="discordToken" id="discordToken" th:required="${!settings.isHaveDiscordToken()}">
+
+        <br>
+        <br>
+
+        <label for="domain">Domain</label>
+        <input type="text" name="domain" id="domain" th:value="${settings.getDomain()}" required>
+    </div>
+
+    <div class="Command Settings">
+        <h3>Command Settings</h3>
+
+        <a href="/settings/commands">
+            <button type="button">Edit Commands</button>
+        </a>
+
+        <br>
+
+        <a href="/settings/rewards">
+            <button type="button">Edit Point Rewards</button>
+        </a>
+
+    </div>
+
+    <dive class="price_settings">
+        <h3>Price Settings</h3>
+
+        <a href="/settings/prices">
+            <button type="button">Edit Prices</button>
+        </a>
+    </dive>
+
+    <div class="Admin Settings">
+        <h3>Admin Settings</h3>
+
+        <a href="/settings/admin">
+            <button type="button">Edit Admin</button>
+        </a>
+
+    </div>
+
+    <br>
+
+    <input type="submit" value="Save">
+
+</form>
+
+</body>
+</html>

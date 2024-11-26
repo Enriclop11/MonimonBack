@@ -1,0 +1,9 @@
+* {
+    box-sizing: border-box;
+}
+
+.image{
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+}

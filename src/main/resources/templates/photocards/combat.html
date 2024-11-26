@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arena Pokémon</title>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+  <link rel="stylesheet" th:href="@{/css/pokemon/combat.css}">
+  <script th:src="@{/js/photocards/combat.js}"></script>
+</head>
+<body>
+<div class="arena" id="pokemonArena">
+  <div class="pokemon-info" id="pokemonInfo1">
+    <img class="pokemon" src="" alt="Pokemon 1">
+    <div class="hp-bar-container">
+      <div class="hp-bar"></div>
+    </div>
+    <p id="pokemonHP1"></p>
+  </div>
+  <div class="pokemon-info" id="pokemonInfo2">
+    <img class="pokemon" src="" alt="Pokemon 2">
+    <div class="hp-bar-container">
+      <div class="hp-bar"></div>
+    </div>
+    <p id="pokemonHP2"></p>
+  </div>
+</div>
+
+<div class="mensajes" id="mensajes">
+  <p id="mensaje"></p>
+</div>
+
+</body>
+</html>
