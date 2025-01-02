@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class PhotoCardDTO {
 
-    private int id;
+    private Integer id;
 
     private String idolID;
 
@@ -36,8 +36,8 @@ public class PhotoCardDTO {
 
     private int popularity;
 
-    PhotoCardDTO(PhotoCard card) {
-        this.id = card.getId();
+    public PhotoCardDTO(PhotoCard card) {
+        this.id = card.getId() == null ? 0 : card.getId();
         this.idolID = card.getIdolID();
         this.name = card.getName();
         this.apiName = card.getApiName();

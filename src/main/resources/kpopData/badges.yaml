@@ -1,0 +1,23 @@
+badges:
+  - ID: 1
+    name: Misamo
+    description: Tienes todas las cartas de Misamo
+    image: https://static.wikia.nocookie.net/kpop/images/c/ca/Misamo_para_Masterpiece.jpg/revision/latest?cb=20240106224417&path-prefix=es
+    requirements:
+      - '037'
+      - '135'
+      - '134'
+    rarity: '4'
+  - ID: 2
+    name: Twice
+    description: Tienes todas las cartas de Twice
+    image: https://static.wikia.nocookie.net/drama/images/c/c9/20689803.jpg/revision/latest?cb=20241206114825&path-prefix=es
+    requirements:
+      - '134'
+      - '135'
+      - '136'
+      - '137'
+      - '138'
+      - '139'
+      - '140'
+    rarity: '5'

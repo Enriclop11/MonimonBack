@@ -3,9 +3,11 @@ package com.enriclop.kpopbot.modelo;
 
 import com.enriclop.kpopbot.dto.BadgeDTO;
 import com.enriclop.kpopbot.enums.Rarity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "badges")
@@ -13,19 +15,19 @@ import lombok.Data;
 public class Badge {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
+    @ManyToMany(mappedBy = "badges")
+    private List<User> users;
 
     private String name;
 
     private String description;
 
     private String image;
+
+    @ElementCollection
+    private List<String> requirements;
 
     @Enumerated(EnumType.STRING)
     private Rarity rarity;
@@ -41,10 +43,12 @@ public class Badge {
     }
 
     public Badge (BadgeDTO badgeDTO) {
+        this.id = badgeDTO.getId();
         this.name = badgeDTO.getName();
         this.description = badgeDTO.getDescription();
         this.image = badgeDTO.getImage();
-        this.rarity = Rarity.valueOf(String.valueOf(badgeDTO.getRarity()));
+        this.rarity = Rarity.fromValue(badgeDTO.getRarity());
+        this.requirements = Arrays.asList(badgeDTO.getRequirements());
     }
 
 }

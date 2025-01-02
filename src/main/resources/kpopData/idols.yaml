@@ -1,0 +1,1026 @@
+idols:
+  - ID: '001'
+    name: JiU
+    fullName: Kim Minji
+    apiName: JiU_(Dreamcatcher)
+    group: Dreamcatcher
+    type: LEADER
+    type2: ''
+    popularity: 83
+  - ID: '002'
+    name: SuA
+    fullName: Kim Bo Ra
+    apiName: SuA_(Dreamcatcher)
+    group: Dreamcatcher
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 68
+  - ID: '003'
+    name: Siyeon
+    fullName: Lee Si Yeon
+    apiName: Siyeon_(Dreamcatcher)
+    group: Dreamcatcher
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 67
+  - ID: '004'
+    name: Handong
+    fullName: Hang Dong
+    apiName: Handong
+    group: Dreamcatcher
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 66
+  - ID: '005'
+    name: Yoohyeon
+    fullName: Kim Yoo Hyeon
+    apiName: Yoohyeon
+    group: Dreamcatcher
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 80
+  - ID: '006'
+    name: Dami
+    fullName: Lee Yoo-bin
+    apiName: Dami_(Dreamcatcher)
+    group: Dreamcatcher
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 68
+  - ID: '007'
+    name: Gahyun
+    fullName: Lee Ga-hyun
+    apiName: Gahyun_(Dreamcatcher)
+    group: Dreamcatcher
+    type: MAKNAE
+    type2: ''
+    popularity: 71
+  - ID: '008'
+    name: Irene
+    fullName: Bae Joo-hyun
+    apiName: Irene_(Red_Velvet)
+    group: Red Velvet
+    type: LEADER
+    type2: ''
+    popularity: 93
+  - ID: '009'
+    name: Seulgi
+    fullName: Kang Seul Gi
+    apiName: Seulgi_(Red_Velvet)
+    group: Red Velvet
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 92
+  - ID: '010'
+    name: Wendy
+    fullName: Son Seung Wan
+    apiName: Wendy
+    group: Red Velvet
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 89
+  - ID: '011'
+    name: Joy
+    fullName: Park Soo Young
+    apiName: Joy_(Red_Velvet)
+    group: Red Velvet
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 88
+  - ID: '012'
+    name: Yeri
+    fullName: Kim Ye Rim
+    apiName: Yeri_(Red_Velvet)
+    group: Red Velvet
+    type: MAKNAE
+    type2: ''
+    popularity: 87
+  - ID: '013'
+    name: Karina
+    fullName: Yoo Ji-min
+    apiName: Karina_(aespa)
+    group: aespa
+    type: LEADER
+    type2: ''
+    popularity: 96
+  - ID: '014'
+    name: Giselle
+    fullName: Uchinaga Aeri
+    apiName: Giselle
+    group: aespa
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 88
+  - ID: '015'
+    name: Winter
+    fullName: Kim Min-jeong
+    apiName: Winter_(aespa)
+    group: aespa
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 93
+  - ID: '016'
+    name: NingNing
+    fullName: Ning Yizhuo
+    apiName: Ningning
+    group: aespa
+    type: MAKNAE
+    type2: ''
+    popularity: 90
+  - ID: '017'
+    name: Sumin
+    fullName: Bae Su Min
+    apiName: Sumin_(STAYC)
+    group: STAYC
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 84
+  - ID: '018'
+    name: Sieun
+    fullName: Park Si-eun
+    apiName: Sieun_(STAYC)
+    group: STAYC
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 70
+  - ID: '019'
+    name: Isa
+    fullName: Lee Chae-young
+    apiName: Isa
+    group: STAYC
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 78
+  - ID: '020'
+    name: Seeun
+    fullName: Yoon Se Eun
+    apiName: Seeun_(STAYC)
+    group: STAYC
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 72
+  - ID: '021'
+    name: Yoon
+    fullName: Sim Ja Yun
+    apiName: Yoon_(STAYC)
+    group: STAYC
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 73
+  - ID: '022'
+    name: J
+    fullName: Jang Ye Eun
+    apiName: J_(STAYC)
+    group: STAYC
+    type: MAKNAE
+    type2: ''
+    popularity: 74
+  - ID: '023'
+    name: Lily
+    fullName: Lily Jin Park
+    apiName: Lily_(NMIXX)
+    group: NMIXX
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 80
+  - ID: '024'
+    name: Haewon
+    fullName: Oh Hae-won
+    apiName: Haewon_(NMIXX)
+    group: NMIXX
+    type: LEADER
+    type2: ''
+    popularity: 77
+  - ID: '025'
+    name: Sullyon
+    fullName: Seol Yoon-a
+    apiName: Sullyoon
+    group: NMIXX
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 79
+  - ID: '026'
+    name: Bae
+    fullName: Bae Jin-Sol
+    apiName: Bae_(NMIXX)
+    group: NMIXX
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 62
+  - ID: '027'
+    name: Jiwoo
+    fullName: Kim Ji-woo
+    apiName: Jiwoo_(NMIXX)
+    group: NMIXX
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 60
+  - ID: '028'
+    name: Kyujin
+    fullName: Jang Kyu-jin
+    apiName: Kyujin
+    group: NMIXX
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 67
+  - ID: '029'
+    name: Eunha
+    fullName: Jung Eun Bi
+    apiName: Eunha
+    group: VIVIZ
+    type: UNNIE
+    type2: ''
+    popularity: 84
+  - ID: '030'
+    name: SinB
+    fullName: Hwang Eun-bi
+    apiName: SinB
+    group: VIVIZ
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 65
+  - ID: '031'
+    name: Umji
+    fullName: Kim Ye Won
+    apiName: Umji_(VIVIZ)
+    group: VIVIZ
+    type: MAKNAE
+    type2: ''
+    popularity: 68
+  - ID: '032'
+    name: Sakura
+    fullName: Miyawaki Sakura
+    apiName: Sakura_(LE_SSERAFIM)
+    group: LE SSERAFIM
+    type: UNNIE
+    type2: ''
+    popularity: 89
+  - ID: '033'
+    name: Chaewon
+    fullName: Kim Chaewon
+    apiName: Kim_Chaewon_(LE_SSERAFIM)
+    group: LE SSERAFIM
+    type: LEADER
+    type2: ''
+    popularity: 95
+  - ID: '034'
+    name: Huh_Yunjin
+    fullName: Huh Yun-Jin
+    apiName: Huh_Yunjin
+    group: LE SSERAFIM
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 89
+  - ID: '035'
+    name: Kazuha
+    fullName: Nakamura Kazuha
+    apiName: Kazuha
+    group: LE SSERAFIM
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 88
+  - ID: '036'
+    name: Eunchae
+    fullName: Hong Eun-chae
+    apiName: Hong_Eunchae
+    group: LE SSERAFIM
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 84
+  - ID: '037'
+    name: Gaeul
+    fullName: Kim Ga Eul
+    apiName: Gaeul_(IVE)
+    group: IVE
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 83
+  - ID: '038'
+    name: Yujin
+    fullName: An Yu-jin
+    apiName: An_Yujin
+    group: IVE
+    type: LEADER
+    type2: ''
+    popularity: 88
+  - ID: '039'
+    name: Rei
+    fullName: Naoi Rei
+    apiName: Rei_(IVE)
+    group: IVE
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 79
+  - ID: '040'
+    name: Wonyoung
+    fullName: Jang Won-young
+    apiName: Jang_Wonyoung
+    group: IVE
+    type: VISUAL
+    type2: ''
+    popularity: 98
+  - ID: '041'
+    name: Liz
+    fullName: Kim Ji Won
+    apiName: Liz
+    group: IVE
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 78
+  - ID: '042'
+    name: Leeseo
+    fullName: Lee Hyun-seo
+    apiName: Leeseo
+    group: IVE
+    type: MAKNAE
+    type2: ''
+    popularity: 81
+  - ID: '043'
+    name: Julie
+    fullName: Julie Hari
+    apiName: Julie_(KISS_OF_LIFE)
+    group: KISS OF LIFE
+    type: LEADER
+    type2: ''
+    popularity: 45
+  - ID: '044'
+    name: Natty
+    fullName: Ahnatchaya Suputhipong
+    apiName: Natty
+    group: KISS OF LIFE
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 62
+  - ID: '045'
+    name: Belle
+    fullName: Shim Hye-won
+    apiName: Belle_(KISS_OF_LIFE)
+    group: KISS OF LIFE
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 40
+  - ID: '046'
+    name: Haneul
+    fullName: Won Ha-neul
+    apiName: Haneul_(KISS_OF_LIFE)
+    group: KISS OF LIFE
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 40
+  - ID: '047'
+    name: Yeji
+    fullName: Hwang Ye-Ji
+    apiName: Yeji_(ITZY)
+    group: ITZY
+    type: LEADER
+    type2: ''
+    popularity: 98
+  - ID: '048'
+    name: Lia
+    fullName: Choi Ji-su
+    apiName: Lia_(ITZY)
+    group: ITZY
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 88
+  - ID: '049'
+    name: Ryujin
+    fullName: Shin Ryu-jin
+    apiName: Ryujin
+    group: ITZY
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 96
+  - ID: '050'
+    name: Chaeryeong
+    fullName: Lee Chae-ryeong
+    apiName: Chaeryeong
+    group: ITZY
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 93
+  - ID: '051'
+    name: Yuna
+    fullName: Shin Yu-na
+    apiName: Yuna_(ITZY)
+    group: ITZY
+    type: VISUAL
+    type2: ''
+    popularity: 93
+    #RIP CIGNATURE
+  - ID: '059'
+    name: Ruka
+    fullName: Kawai Ruka
+    apiName: Ruka_(BABYMONSTER)
+    group: BABYMONSTER
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 66
+  - ID: '060'
+    name: Pharita
+    fullName: Pharita Chaikong
+    apiName: Pharita
+    group: BABYMONSTER
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 59
+  - ID: '061'
+    name: Asa
+    fullName: Enami Asa
+    apiName: Asa
+    group: BABYMONSTER
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 66
+  - ID: '062'
+    name: Ahyeon
+    fullName: Jung Ahyeon
+    apiName: Ahyeon_(BABYMONSTER)
+    group: BABYMONSTER
+    type: CENTER
+    type2: ''
+    popularity: 74
+  - ID: '063'
+    name: Rami
+    fullName: Shin Haram
+    apiName: Rami
+    group: BABYMONSTER
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 54
+  - ID: '064'
+    name: Rora
+    fullName: Lee Da-in
+    apiName: Rora_(BABYMONSTER)
+    group: BABYMONSTER
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 59
+  - ID: '065'
+    name: Chiquita
+    fullName: Riracha Phondechaphipha
+    apiName: Chiquita
+    group: BABYMONSTER
+    type: MAKNAE
+    type2: ''
+    popularity: 74
+  - ID: '066'
+    name: Yunah
+    fullName: Noh Yun-ah
+    apiName: Yunah
+    group: ILLIT
+    type: LEADER
+    type2: ''
+    popularity: 20
+  - ID: '067'
+    name: Minju
+    fullName: Park Min-ju
+    apiName: Minju_(ILLIT)
+    group: ILLIT
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 40
+  - ID: '068'
+    name: Moka
+    fullName: Sakai Moka
+    apiName: Moka_(ILLIT)
+    group: ILLIT
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 42
+  - ID: '069'
+    name: Wonhee
+    fullName: Lee Won-hee
+    apiName: Wonhee
+    group: ILLIT
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 60
+  - ID: '070'
+    name: Iroha
+    fullName: Hokazono Iroha
+    apiName: Iroha
+    group: ILLIT
+    type: MAKNAE
+    type2: ''
+    popularity: 45
+  - ID: '071'
+    name: E:U
+    fullName: Park Jiwon
+    apiName: E:U
+    group: EVERGLOW
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 40
+  - ID: '072'
+    name: Sihyeon
+    fullName: Kim Sihyeon
+    apiName: Sihyeon_(EVERGLOW)
+    group: EVERGLOW
+    type: LEADER
+    type2: ''
+    popularity: 60
+  - ID: '073'
+    name: Mia
+    fullName: Han Eunji
+    apiName: Mia_(EVERGLOW)
+    group: EVERGLOW
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 64
+  - ID: '074'
+    name: Onda
+    fullName: Jo Se-rim
+    apiName: Onda
+    group: EVERGLOW
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 50
+  - ID: '075'
+    name: Aisha
+    fullName: Heo Yoorim
+    apiName: Aisha
+    group: EVERGLOW
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 66
+  - ID: '076'
+    name: Yiren
+    fullName: Wang Yiren
+    apiName: Yiren
+    group: EVERGLOW
+    type: MAKNAE
+    type2: ''
+    popularity: 68
+  - ID: '077'
+    name: Jisoo
+    fullName: Kim Jisoo
+    apiName: Jisoo_(BLACKPINK)
+    group: BLACKPINK
+    type: VISUAL
+    type2: ''
+    popularity: 99
+  - ID: '078'
+    name: Jennie
+    fullName: Kim Jennie
+    apiName: Jennie
+    group: BLACKPINK
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 99
+  - ID: '079'
+    name: Rose
+    fullName: Park Chaeyoung
+    apiName: Rosé
+    group: BLACKPINK
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 99
+  - ID: '080'
+    name: Lisa
+    fullName: Lalisa Manobal
+    apiName: Lisa_(BLACKPINK)
+    group: BLACKPINK
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 100
+  - ID: '081'
+    name: Minji
+    fullName: Kim Min-ji
+    apiName: Minji_(NewJeans)
+    group: New Jeans
+    type: UNNIE
+    type2: ''
+    popularity: 92
+  - ID: '082'
+    name: Hanni
+    fullName: Hanni Pham
+    apiName: Hanni
+    group: New Jeans
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 92
+  - ID: '083'
+    name: Danielle
+    fullName: Danielle Marsh
+    apiName: Danielle
+    group: New Jeans
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 88
+  - ID: '084'
+    name: Haerin
+    fullName: Kang Hae-rin
+    apiName: Haerin_(NewJeans)
+    group: New Jeans
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 90
+  - ID: '085'
+    name: Hyein
+    fullName: Lee Hye-in
+    apiName: Hyein_(NewJeans)
+    group: New Jeans
+    type: MAKNAE
+    type2: ''
+    popularity: 79
+  - ID: '086'
+    name: Solar
+    fullName: Kim Yong Sun
+    apiName: Solar
+    group: MAMAMOO
+    type: LEADER
+    type2: ''
+    popularity: 80
+  - ID: '087'
+    name: Moonbyul
+    fullName: Moon Byul-yi
+    apiName: Moon_Byul
+    group: MAMAMOO
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 76
+  - ID: '088'
+    name: Wheein
+    fullName: Jung Whee-in
+    apiName: Whee_In
+    group: MAMAMOO
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 69
+  - ID: '089'
+    name: Hwasa
+    fullName: Ahn Hye-jin
+    apiName: Hwa_Sa
+    group: MAMAMOO
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 83
+  - ID: '090'
+    name: Goeun
+    fullName: Na Goeun
+    apiName: Na_Go_Eun
+    group: PURPLE KISS
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 24
+  - ID: '091'
+    name: Dosie
+    fullName: Jang Eunseong
+    apiName: Dosie
+    group: PURPLE KISS
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 20
+  - ID: '092'
+    name: Ireh
+    fullName: Cho Seoyoung
+    apiName: Ireh_(PURPLE_KISS)
+    group: PURPLE KISS
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 10
+  - ID: '093'
+    name: Yuki
+    fullName: Mori Koyuki
+    apiName: Yuki_(PURPLE_KISS)
+    group: PURPLE KISS
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 15
+  - ID: '094'
+    name: Chaein
+    fullName: Lee Chae-young
+    apiName: Chaein
+    group: PURPLE KISS
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 15
+  - ID: '095'
+    name: Swan
+    fullName: Park Sujin
+    apiName: Swan_(PURPLE_KISS)
+    group: PURPLE KISS
+    type: MAKNAE
+    type2: ''
+    popularity: 17
+  - ID: '096'
+    name: Yujin
+    fullName: Choi Yu-jin
+    apiName: Yujin_(Kep1er)
+    group: Kep1er
+    type: LEADER
+    type2: ''
+    popularity: 55
+  - ID: '097'
+    name: Xiaoting
+    fullName: Shen Xiao Ting
+    apiName: Xiaoting
+    group: Kep1er
+    type: VISUAL
+    type2: ''
+    popularity: 62
+  - ID: '098'
+    name: Chaehyun
+    fullName: Kim Chae-hyun
+    apiName: Chaehyun_(Kep1er)
+    group: Kep1er
+    type: CENTER
+    type2: ''
+    popularity: 50
+  - ID: '099'
+    name: Dayeon
+    fullName: Kim Da-yeon
+    apiName: Dayeon_(Kep1er)
+    group: Kep1er
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 37
+  - ID: '100'
+    name: Hikaru
+    fullName: Ezaki Hikaru
+    apiName: Hikaru_(Kep1er)
+    group: Kep1er
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 50
+  - ID: '101'
+    name: Huening Bahiyyih
+    fullName: Bahiyyih Jaleh Huening
+    apiName: Huening_Bahiyyih
+    group: Kep1er
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 76
+  - ID: '102'
+    name: Youngeun
+    fullName: Seo Young-eun
+    apiName: Youngeun_(Kep1er)
+    group: Kep1er
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 20
+  - ID: '103'
+    name: Hyojung
+    fullName: Choi Hyojung
+    apiName: Hyojung_(OH_MY_GIRL)
+    group: OH MY GIRL
+    type: LEADER
+    type2: ''
+    popularity: 10
+  - ID: '104'
+    name: Mimi
+    fullName: Kim Mihyun
+    apiName: Mimi_(OH_MY_GIRL)
+    group: OH MY GIRL
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 11
+  - ID: '105'
+    name: YooA
+    fullName: Yoo Shiah
+    apiName: YooA
+    group: OH MY GIRL
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 60
+  - ID: '106'
+    name: Seunghee
+    fullName: Hyun Seunghee
+    apiName: Seunghee_(OH_MY_GIRL)
+    group: OH MY GIRL
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 10
+  - ID: '107'
+    name: Yubin
+    fullName: Bae Yoo Bin
+    apiName: Yubin_(OH_MY_GIRL)
+    group: OH MY GIRL
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 20
+  - ID: '108'
+    name: Arin
+    fullName: Choi Yewon
+    apiName: Arin_(OH_MY_GIRL)
+    group: OH MY GIRL
+    type: VISUAL
+    type2: ''
+    popularity: 74
+  - ID: '109'
+    name: Saerom
+    fullName: Lee Sae Rom
+    apiName: Lee_Saerom
+    group: fromis_9
+    type: LEADER
+    type2: ''
+    popularity: 67
+  - ID: '110'
+    name: Hayoung
+    fullName: Song Ha-young
+    apiName: Song_Hayoung
+    group: fromis_9
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 50
+  - ID: '111'
+    name: Jiwon
+    fullName: Park Ji-won
+    apiName: Park_Jiwon_(fromis_9)
+    group: fromis_9
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 50
+  - ID: '112'
+    name: Jisun
+    fullName: Roh Ji Sun
+    apiName: Roh_Jisun
+    group: fromis_9
+    type: CENTER
+    type2: ''
+    popularity: 50
+  - ID: '113'
+    name: Seoyeon
+    fullName: Lee Seo-yeon
+    apiName: Lee_Seoyeon
+    group: fromis_9
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 30
+  - ID: '114'
+    name: Chaeyoung
+    fullName: Lee Chae-young
+    apiName: Lee_Chaeyoung
+    group: fromis_9
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 55
+  - ID: '115'
+    name: Nagyung
+    fullName: Lee Na-gyung
+    apiName: Lee_Nagyung
+    group: fromis_9
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 50
+  - ID: '116'
+    name: Jiheon
+    fullName: Baek Ji Heon
+    apiName: Baek_Jiheon
+    group: fromis_9
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 49
+  - ID: '122'
+    name: JinSoul
+    fullName: Jeong Jin-Sol
+    apiName: JinSoul_(ARTMS)
+    group: ARTMS
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 65
+  - ID: '123'
+    name: HaSeul
+    fullName: Cho Ha-Seul
+    apiName: HaSeul_(ARTMS)
+    group: ARTMS
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 64
+  - ID: '124'
+    name: Kim Lip
+    fullName: Kim Jung-eun
+    apiName: Kim_Lip
+    group: ARTMS
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 66
+  - ID: '125'
+    name: HeeJin
+    fullName: Jeon Hee-jin
+    apiName: HeeJin_(ARTMS)
+    group: ARTMS
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 74
+  - ID: '126'
+    name: Choerry
+    fullName: Choi Ye-rim
+    apiName: Choerry
+    group: ARTMS
+    type: MAKNAE
+    type2: ''
+    popularity: 55
+  - ID: '127'
+    name: Miyeon
+    fullName: Cho Mi-yeon
+    apiName: Miyeon
+    group: (G)I-DLE
+    type: VISUAL
+    type2: ''
+    popularity: 92
+  - ID: '128'
+    name: Minnie
+    fullName: Nicha Yontararak
+    apiName: Minnie_((G)I-DLE)
+    group: (G)I-DLE
+    type: MAIN_VOCAL
+    type2: ''
+    popularity: 88
+  - ID: '129'
+    name: Soyeon
+    fullName: Jeon So-yeon
+    apiName: Soyeon_((G)I-DLE)
+    group: (G)I-DLE
+    type: LEADER
+    type2: ''
+    popularity: 90
+  - ID: '130'
+    name: Yuqi
+    fullName: Song Yu Qi
+    apiName: Yuqi
+    group: (G)I-DLE
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 95
+  - ID: '131'
+    name: Shuhua
+    fullName: Yeh Shuhua
+    apiName: Shuhua
+    group: (G)I-DLE
+    type: MAKNAE
+    type2: ''
+    popularity: 87
+  - ID: '132'
+    name: Nayeon
+    fullName: Im Na-yeon
+    apiName: Nayeon_(TWICE)
+    group: TWICE
+    type: CENTER
+    type2: ''
+    popularity: 99
+  - ID: '133'
+    name: Jeongyeon
+    fullName: Yoo Jeong-yeon
+    apiName: Jeongyeon_(TWICE)
+    group: TWICE
+    type: LEAD_VOCAL
+    type2: ''
+    popularity: 96
+  - ID: '134'
+    name: Momo
+    fullName: Hirai Momo
+    apiName: Momo
+    group: TWICE
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 99
+  - ID: '135'
+    name: Sana
+    fullName: Minatozaki Sana
+    apiName: Sana
+    group: TWICE
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 100
+  - ID: '136'
+    name: Jihyo
+    fullName: Park Ji-hyo
+    apiName: Jihyo_(TWICE)
+    group: TWICE
+    type: LEADER
+    type2: ''
+    popularity: 97
+  - ID: '137'
+    name: Mina
+    fullName: Mina Sharon Myoi
+    apiName: Mina_(TWICE)
+    group: TWICE
+    type: MAIN_DANCER
+    type2: ''
+    popularity: 98
+  - ID: '138'
+    name: Dahyun
+    fullName: Kim Da-hyun
+    apiName: Dahyun_(TWICE)
+    group: TWICE
+    type: SUB_VOCAL
+    type2: ''
+    popularity: 99
+  - ID: '139'
+    name: Chaeyoung
+    fullName: Son Chae-young
+    apiName: Chaeyoung_(TWICE)
+    group: TWICE
+    type: MAIN_RAPPER
+    type2: ''
+    popularity: 96
+  - ID: '140'
+    name: Tzuyu
+    fullName: Chou Tzuyu
+    apiName: Tzuyu
+    group: TWICE
+    type: MAKNAE
+    type2: ''
+    popularity: 99

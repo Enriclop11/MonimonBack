@@ -1,6 +1,7 @@
 package com.enriclop.kpopbot.servicio;
 
 
+import com.enriclop.kpopbot.dto.MarketplaceDTO;
 import com.enriclop.kpopbot.modelo.Marketplace;
 import com.enriclop.kpopbot.repositorio.IMarketplaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class MarketplaceService {
 
     public List<Marketplace> getMarketplace() {
         return marketplaceRepository.findAll();
+    }
+
+    public List<MarketplaceDTO> getMarketplaceDTO() {
+        return marketplaceRepository.findAllDTO();
     }
 
     public Marketplace getMarketplaceById(int id) {

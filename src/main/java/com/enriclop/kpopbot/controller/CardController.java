@@ -1,5 +1,9 @@
 package com.enriclop.kpopbot.controller;
 
+import com.enriclop.kpopbot.dto.BoosterPackDTO;
+import com.enriclop.kpopbot.dto.PhotoCardDTO;
+import com.enriclop.kpopbot.kpopDB.KpopBoosterPack;
+import com.enriclop.kpopbot.kpopDB.KpopService;
 import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.servicio.CardService;
@@ -23,6 +27,12 @@ public class CardController {
 
     @Autowired
     private TwitchConnection twitchConnection;
+
+    @Autowired
+    private KpopService kpopService;
+
+    @Autowired
+    private KpopBoosterPack kpopBoosterPack;
 
     @GetMapping("/photoCards")
     public List<PhotoCard> getPokemons() {
@@ -50,11 +60,13 @@ public class CardController {
     }
 
     @DeleteMapping("/deleteCard/{id}")
-    public void deletePokemon(@PathVariable Integer id, @RequestHeader("Authorization") String token) {
+    public void deleteCard(@PathVariable Integer id, @RequestHeader("Authorization") String token) {
         User user = userService.getUserByToken(token);
         PhotoCard photoCard = cardService.getCardById(id);
 
         if (user != null && photoCard != null && user.getPhotoCards().contains(photoCard)) {
+            int price = kpopService.getPrice(photoCard);
+            user.addScore(price);
             user.getPhotoCards().remove(photoCard);
             userService.saveUser(user);
             cardService.deleteCardById(id);
@@ -62,5 +74,26 @@ public class CardController {
         } else {
             log.warn("User " + user.getUsername() + " attempted to delete a card that does not exist or does not belong to them.");
         }
+    }
+
+    @GetMapping("/photoCards/price/{id}")
+    public int getPrice(@PathVariable Integer id) {
+        return kpopService.getPrice(cardService.getCardById(id));
+    }
+
+    @GetMapping("/boosterPacks")
+    public List<BoosterPackDTO> getBoosterPacks() {
+        return kpopService.getBoosterPacks().getBoosterPacks();
+    }
+
+    @GetMapping("/boosterPacks/{id}")
+    public BoosterPackDTO getBoosterPackById(@PathVariable int id) {
+        return kpopService.getBoosterPackById(id);
+    }
+
+    @PostMapping("/boosterPacks/open/{id}")
+    public PhotoCardDTO openBoosterPack(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        User user = userService.getUserByToken(token);
+        return new PhotoCardDTO(kpopBoosterPack.openBoosterPack(user, id));
     }
 }

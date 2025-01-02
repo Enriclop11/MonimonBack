@@ -87,6 +87,9 @@ public class TwitchConnection {
 
     com.github.twitch4j.helix.domain.User channel;
 
+    @Autowired
+    private KpopPhotos kpopPhotos;
+
     public TwitchConnection() {
         commands = List.of(
                 new Command("leaderboard", true),
@@ -418,7 +421,7 @@ public class TwitchConnection {
     }
 
     public PhotoCard spawnPhoto() {
-        PhotoCard newPokemon = KpopPhotos.generateRandomPhotocard();
+        PhotoCard newPokemon = kpopPhotos.generateRandomPhotocard();
 
         if (newPokemon != null) {
             wildCard = newPokemon;

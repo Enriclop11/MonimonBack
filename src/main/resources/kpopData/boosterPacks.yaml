@@ -1,0 +1,34 @@
+boosterPacks:
+  - id: 1
+    name: "Dreamcatcher Booster Pack"
+    image: "https://static.wikia.nocookie.net/drama/images/2/25/4104188.jpg/revision/latest?cb=20240710145343&path-prefix=es"
+    price: 0
+    idolIds:
+      - 001
+      - 002
+      - 003
+      - 004
+      - 005
+      - 006
+      - 007
+    customCards:
+      - idolId: 007
+        customPhoto: "https://raw.githubusercontent.com/Enriclop11/PhotoRepository/refs/heads/main/Dreamcatcher/CustomGahyun1.jpg"
+        customPopularity: 85
+        customHealth: 1000
+        customAttack: 1000
+        customDefense: 1000
+        customType1: "MAKNAE"
+        customType2: "LEAD_VOCAL"
+        rarity: 1
+      - idolId: 002
+        customPhoto: "https://raw.githubusercontent.com/Enriclop11/PhotoRepository/refs/heads/main/Dreamcatcher/CustomSua1.jpg"
+        rarity: 1
+  - id: 2
+    name: "Booster Pack 2"
+    image: "https://raw.githubusercontent.com/Enriclop11/PhotoRepository/refs/heads/main/Dreamcatcher/DreamcatcherBoosterPack.jpg"
+    price: 5.00
+    idolIds:
+      - 8
+      - 9
+      - 10

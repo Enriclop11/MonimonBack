@@ -1,13 +1,10 @@
 package com.enriclop.kpopbot.modelo;
 
-import com.enriclop.kpopbot.dto.IdolDTO;
 import com.enriclop.kpopbot.enums.Types;
 import com.enriclop.kpopbot.utilities.Utilities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.Objects;
 
 
 @Entity
@@ -17,7 +14,7 @@ public class PhotoCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String idolID;
 
@@ -71,18 +68,17 @@ public class PhotoCard {
         this.popularity = photoCard.getPopularity();
     }
 
-    public PhotoCard(IdolDTO idolDTO, String photo) {
+    public PhotoCard(Idol idolDTO, String photo) {
         this.idolID = idolDTO.getId();
         this.name = idolDTO.getName();
         this.fullName = idolDTO.getFullName();
         this.apiName = idolDTO.getApiName();
-        this.band = idolDTO.getGroup();
+        this.band = idolDTO.getBand();
         this.photo = photo;
         this.popularity = idolDTO.getPopularity();
 
-        //type and type2 can be "", so we need to check if they are null
-        this.type = Objects.equals(idolDTO.getType(), "") ? Types.NONE : Types.valueOf(idolDTO.getType().toUpperCase());
-        this.type2 = Objects.equals(idolDTO.getType2(), "") ? Types.NONE : Types.valueOf(idolDTO.getType2().toUpperCase());
+        this.type = idolDTO.getType();
+        this.type2 = idolDTO.getType2();
 
         //Calculate the random stats with the popularity of the idol
         int popularity = idolDTO.getPopularity();

@@ -1,5 +1,6 @@
 package com.enriclop.kpopbot.servicio;
 
+import com.enriclop.kpopbot.dto.UserDto;
 import com.enriclop.kpopbot.modelo.Badge;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.repositorio.IUserRepository;
@@ -24,8 +25,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getUsers() {
+        return userRepository.getUsersLeaderboard();
     }
 
     public User getUserByUsername(String username) {

@@ -2,18 +2,25 @@ package com.enriclop.kpopbot.kpopDB;
 
 import com.enriclop.kpopbot.dto.IdolDTO;
 import com.enriclop.kpopbot.dto.IdolListDTO;
+import com.enriclop.kpopbot.modelo.Idol;
 import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 
+@Service
 public class KpopPhotos {
+
+    @Autowired
+    private KpopService kpopService;
 
     final static String[] bannedPhotos = {
             "google_play",
@@ -110,35 +117,16 @@ public class KpopPhotos {
         }
     }
 
-    public static PhotoCard generateRandomPhotocard() {
-        ObjectMapper mapper = new ObjectMapper();
-        try (InputStream inputStream = KpopPhotos.class.getResourceAsStream("/kpopData/idols.json");) {
-            if (inputStream == null) {
-                throw new IOException("File not found: kpopData");
-            }
-            IdolListDTO idolList = mapper.readValue(inputStream, IdolListDTO.class);
+    public PhotoCard generateRandomPhotocard() {
 
-            boolean found = false;
-            IdolDTO idol = null;
-            while (!found) {
-                int randomIndex = new Random().nextInt(idolList.getIdols().size());
-                idol = idolList.getIdols().get(randomIndex);
-                if (new Random().nextInt(100) > idol.getPopularity() - 30){
-                    found = true;
-                }
-            }
+        Idol idol = kpopService.getRandomIdol();
 
-            String photo = getRandomPhoto(idol.getApiName(), idol.getName(), idol.getGroup());
-            if (photo == null) {
-                return null;
-            }
-
-            return new PhotoCard(idol, photo);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        String photo = getRandomPhoto(idol.getApiName(), idol.getName(), idol.getBand());
+        if (photo == null) {
             return null;
         }
+
+        return new PhotoCard(idol, photo);
     }
 
     public static PhotoCard regeneratePhotocard(PhotoCard card) {

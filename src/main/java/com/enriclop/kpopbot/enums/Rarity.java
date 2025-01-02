@@ -18,4 +18,13 @@ public enum Rarity {
     public int getValue() {
         return value;
     }
+
+    public static Rarity fromValue(int value) {
+        for (Rarity rarity : Rarity.values()) {
+            if (rarity.getValue() == value) {
+                return rarity;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant for value: " + value);
+    }
 }

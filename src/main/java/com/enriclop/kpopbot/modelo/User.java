@@ -1,6 +1,5 @@
 package com.enriclop.kpopbot.modelo;
 
-import com.enriclop.kpopbot.dto.BadgeDTO;
 import com.enriclop.kpopbot.utilities.Utilities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -39,7 +38,11 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<PhotoCard> photoCards = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "user_badge",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "badge_id"))
     private List<Badge> badges = new ArrayList<>();
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
@@ -87,9 +90,8 @@ public class User {
         }
     }
 
-    public void addBadge(BadgeDTO badge) {
-        Badge newBadge = new Badge(badge);
-        this.badges.add(newBadge);
+    public void addBadge(Badge badge) {
+        this.badges.add(badge);
     }
 
 }

@@ -39,8 +39,7 @@ public class UserController {
 
     @GetMapping("/users")
     public List<UserDto> getUsers() {
-        List<User> users = userService.getUsers();
-        return UserDto.fromUsers(users);
+        return userService.getUsers();
     }
 
     @GetMapping("/users/{id}")
@@ -167,5 +166,4 @@ public class UserController {
     static class TwitchLoginDTO {
         public String code;
     }
-
 }
