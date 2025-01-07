@@ -2,7 +2,6 @@ package com.enriclop.kpopbot.controller;
 
 import com.enriclop.kpopbot.discordConnection.DiscordConnection;
 import com.enriclop.kpopbot.dto.AdminUser;
-import com.enriclop.kpopbot.dto.Command;
 import com.enriclop.kpopbot.dto.SettingsDTO;
 import com.enriclop.kpopbot.security.Settings;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
@@ -13,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.List;
 
 @Controller
 public class SettingsController {
@@ -120,6 +117,7 @@ public class SettingsController {
         return "settings/commands";
     }
 
+    /*
     @PostMapping("/settings/commands")
     public String changeCommands(@ModelAttribute("command") Command command) {
         System.out.println(command.getName());
@@ -139,12 +137,15 @@ public class SettingsController {
         return "redirect:/settings/commands";
     }
 
+     */
+
     @GetMapping("/settings/rewards")
     public String rewards(Model model) {
         model.addAttribute("commands", twitchConnection.getRewards());
         return "settings/rewards";
     }
 
+    /*
     @PostMapping("/settings/rewards")
     public String changeRewards(@ModelAttribute("command") Command reward) {
         System.out.println(reward.getName());
@@ -163,6 +164,8 @@ public class SettingsController {
 
         return "redirect:/settings/rewards";
     }
+
+     */
 
     @GetMapping("/settings/prices")
     public String prices(Model model) {

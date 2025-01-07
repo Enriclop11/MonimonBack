@@ -29,9 +29,13 @@ public class KpopService {
 
     @PostConstruct
     public void init() {
-        if (System.getProperty("spring.profiles.active").equals("prod")) {
-            loadIdols();
-            loadBadges();
+        try {
+            if (System.getProperty("spring.profiles.active").equals("prod")) {
+                loadIdols();
+                loadBadges();
+            }
+        } catch (NullPointerException e) {
+            log.info("Not in prod mode");
         }
     }
 

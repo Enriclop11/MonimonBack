@@ -22,10 +22,10 @@ public class Trade extends Thread {
     boolean accepted = false;
     boolean stopped = false;
 
-    public Trade(User user, User receiver, PhotoCard pokemon, UserService userService, CardService photoCardService, TwitchClient twitchClient, TwitchConnection conn) {
+    public Trade(User user, User receiver, PhotoCard photoCard, UserService userService, CardService photoCardService, TwitchClient twitchClient, TwitchConnection conn) {
         this.user1 = user;
         this.user2 = receiver;
-        this.card1 = pokemon;
+        this.card1 = photoCard;
         this.userService = userService;
         this.photoCardService = photoCardService;
         this.twitchClient = twitchClient;
