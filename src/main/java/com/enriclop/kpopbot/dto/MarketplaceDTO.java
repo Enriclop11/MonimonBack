@@ -1,6 +1,7 @@
 package com.enriclop.kpopbot.dto;
 
 import com.enriclop.kpopbot.enums.Types;
+import com.enriclop.kpopbot.utilities.Utilities;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +18,8 @@ public class MarketplaceDTO {
     private int hp;
     private int defense;
     private int attack;
-    private Types type;
-    private Types type2;
+    private String type;
+    private String type2;
     private int popularity;
     private int price;
     private int ownerId;
@@ -35,11 +36,11 @@ public class MarketplaceDTO {
         this.hp = hp;
         this.defense = defense;
         this.attack = attack;
-        this.type = type;
-        this.type2 = type2;
+        this.type = type.getDisplayName();
+        this.type2 = type2.getDisplayName();
         this.popularity = popularity;
         this.price = price;
         this.ownerId = ownerId;
-        this.owner = ownerUsername;
+        this.owner = Utilities.firstLetterToUpperCase(ownerUsername);
     }
 }
