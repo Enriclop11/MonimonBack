@@ -32,9 +32,9 @@ public class MarketplaceController {
     }
 
     @PostMapping("/marketplace/buy")
-    public void buyCard(@RequestBody int offerId, @RequestHeader("Authorization") String token) {
+    public void buyCard(@RequestBody OfferIdDTO offer, @RequestHeader("Authorization") String token) {
         User buyer = userService.getUserByToken(token);
-        Marketplace market = marketplaceService.getMarketplaceById(offerId);
+        Marketplace market = marketplaceService.getMarketplaceById(offer.offerId);
         PhotoCard card = market.getCard();
         int price = market.getPrice();
         User seller = card.getUser();
@@ -46,7 +46,14 @@ public class MarketplaceController {
             userService.saveUser(seller);
 
             cardService.changeUser(card, buyer);
+            marketplaceService.deleteMarketplace(offer.offerId);
+
+            log.info("User " + buyer.getUsername() + " bought card " + card.getId() + " from user " + seller.getUsername() + " for " + price + " points");
         }
+    }
+
+    public static class OfferIdDTO {
+        public int offerId;
     }
 
     @PostMapping("/marketplace/offer")

@@ -13,6 +13,8 @@ public class CardService {
 
     @Autowired
     private IPhotoCardRepository cardRepository;
+    @Autowired
+    private UserService userService;
 
     public CardService(IPhotoCardRepository cardRepository) {
         this.cardRepository = cardRepository;
@@ -35,6 +37,15 @@ public class CardService {
     }
 
     public void changeUser(PhotoCard card, User user) {
+        //if the old owner has the card selected, remove it
+        User oldOwner = card.getUser();
+        List<Integer> selectedCards = oldOwner.getSelectedCards();
+        if (selectedCards.contains(card.getId())) {
+            selectedCards.remove(card.getId());
+            oldOwner.setSelectedCards(selectedCards);
+            userService.saveUser(oldOwner);
+        }
+
         card.setUser(user);
         cardRepository.save(card);
     }

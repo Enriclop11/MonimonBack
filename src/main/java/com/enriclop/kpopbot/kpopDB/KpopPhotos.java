@@ -34,8 +34,6 @@ public class KpopPhotos {
 
 
     public static String getRandomPhoto(String apiName, String name, String group) {
-        //https://kpop.fandom.com/wiki/Gahyun_(Dreamcatcher)/Gallery
-
         String url = "https://kpop.fandom.com/wiki/" + apiName + "/Gallery";
 
         System.out.println(url);
@@ -59,8 +57,6 @@ public class KpopPhotos {
 
                 return false;
             });
-
-            //images.forEach(image -> System.out.println("https://kpopping.com" + image.attr("src")));
 
             Random random = new Random();
             Element randomImage = images.get(random.nextInt(images.size()));
