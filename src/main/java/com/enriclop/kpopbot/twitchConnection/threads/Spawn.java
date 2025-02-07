@@ -37,7 +37,7 @@ public class Spawn extends Thread {
             }
 
             log.info("Spawning card");
-            if (active)  {
+            if (active && conn.isLive())  {
                 wildCard = conn.spawnPhoto();
 
                 log.info("Card spawned: " + wildCard.getName());

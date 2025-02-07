@@ -227,7 +227,7 @@ idols:
     name: Eunha
     fullName: Jung Eun Bi
     apiName: Eunha
-    group: VIVIZ
+    group: GFRIEND
     type: UNNIE
     type2: ''
     popularity: 84
@@ -235,7 +235,7 @@ idols:
     name: SinB
     fullName: Hwang Eun-bi
     apiName: SinB
-    group: VIVIZ
+    group: GFRIEND
     type: MAIN_DANCER
     type2: ''
     popularity: 65
@@ -243,7 +243,7 @@ idols:
     name: Umji
     fullName: Kim Ye Won
     apiName: Umji_(VIVIZ)
-    group: VIVIZ
+    group: GFRIEND
     type: MAKNAE
     type2: ''
     popularity: 68
@@ -808,70 +808,6 @@ idols:
     type: VISUAL
     type2: ''
     popularity: 74
-  - ID: '109'
-    name: Saerom
-    fullName: Lee Sae Rom
-    apiName: Lee_Saerom
-    group: fromis_9
-    type: LEADER
-    type2: ''
-    popularity: 67
-  - ID: '110'
-    name: Hayoung
-    fullName: Song Ha-young
-    apiName: Song_Hayoung
-    group: fromis_9
-    type: MAIN_DANCER
-    type2: ''
-    popularity: 50
-  - ID: '111'
-    name: Jiwon
-    fullName: Park Ji-won
-    apiName: Park_Jiwon_(fromis_9)
-    group: fromis_9
-    type: SUB_VOCAL
-    type2: ''
-    popularity: 50
-  - ID: '112'
-    name: Jisun
-    fullName: Roh Ji Sun
-    apiName: Roh_Jisun
-    group: fromis_9
-    type: CENTER
-    type2: ''
-    popularity: 50
-  - ID: '113'
-    name: Seoyeon
-    fullName: Lee Seo-yeon
-    apiName: Lee_Seoyeon
-    group: fromis_9
-    type: MAIN_RAPPER
-    type2: ''
-    popularity: 30
-  - ID: '114'
-    name: Chaeyoung
-    fullName: Lee Chae-young
-    apiName: Lee_Chaeyoung
-    group: fromis_9
-    type: MAIN_DANCER
-    type2: ''
-    popularity: 55
-  - ID: '115'
-    name: Nagyung
-    fullName: Lee Na-gyung
-    apiName: Lee_Nagyung
-    group: fromis_9
-    type: MAIN_VOCAL
-    type2: ''
-    popularity: 50
-  - ID: '116'
-    name: Jiheon
-    fullName: Baek Ji Heon
-    apiName: Baek_Jiheon
-    group: fromis_9
-    type: SUB_VOCAL
-    type2: ''
-    popularity: 49
   - ID: '122'
     name: JinSoul
     fullName: Jeong Jin-Sol
