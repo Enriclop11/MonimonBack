@@ -13,6 +13,15 @@ public interface IIdolRepository extends JpaRepository<Idol, Integer> {
     @Query("select i from Idol i where i.isActive = true")
     List<Idol> findByIsActiveTrue();
 
-    @Query("select i from Idol i where i.id = ?1")
-    Idol findById(String id);
+
+
+    @Query("select i from Idol i where i.isActive = true and i.popularity between ?1 and ?2")
+    List<Idol> findByIsActiveTrueAndPopularityBetween(int popularityStart, int popularityEnd);
+
+    @Query("select i from Idol i where i.name = ?1")
+    Idol findByName(String name);
+
+    @Query("select i from Idol i where i.apiName = ?1")
+    List<Idol> findByApiName(String apiName);
+
 }

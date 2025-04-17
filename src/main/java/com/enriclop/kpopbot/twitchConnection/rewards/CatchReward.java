@@ -27,6 +27,11 @@ public class CatchReward implements Reward {
     }
 
     @Override
+    public int getCooldown() {
+        return 0;
+    }
+
+    @Override
     public void execute(TwitchConnection connection, RewardRedeemedEvent event) {
         connection.catchPokemon(event.getRedemption().getUser().getId(), POKEBALL);
     }

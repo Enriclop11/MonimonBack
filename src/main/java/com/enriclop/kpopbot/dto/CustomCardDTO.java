@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CustomCardDTO {
-        private String idolId;
+        private Integer idolId;
         private String customPhoto;
         private int rarity;
 
@@ -24,7 +24,7 @@ public class CustomCardDTO {
         public CustomCardDTO() {
         }
 
-        public CustomCardDTO(String idolId, String customPhoto, int rarity) {
+        public CustomCardDTO(Integer idolId, String customPhoto, int rarity) {
             this.idolId = idolId;
             this.customPhoto = customPhoto;
             this.rarity = rarity;

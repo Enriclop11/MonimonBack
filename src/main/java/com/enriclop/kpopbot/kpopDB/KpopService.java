@@ -31,8 +31,8 @@ public class KpopService {
     public void init() {
         try {
             if (System.getProperty("spring.profiles.active").equals("prod")) {
-                loadIdols();
-                loadBadges();
+                //loadIdols();
+                //loadBadges();
             }
         } catch (NullPointerException e) {
             log.info("Not in prod mode");
@@ -43,12 +43,20 @@ public class KpopService {
         return idolRepository.findAll();
     }
 
-    public Idol getIdolById(String id) {
-        return idolRepository.findById(id);
+    public Idol getIdolById(Integer id) {
+        return idolRepository.findById(id).orElse(null);
+    }
+
+    public Idol getIdolByName(String name) {
+        return idolRepository.findByName(name);
     }
 
     public List<Idol> getActiveIdols() {
         return idolRepository.findByIsActiveTrue();
+    }
+
+    public List<Idol> getActiveIdolsByRange(int min, int max) {
+        return idolRepository.findByIsActiveTrueAndPopularityBetween(min, max);
     }
 
     public void saveIdol(Idol idol) {
@@ -110,11 +118,16 @@ public class KpopService {
     }
 
     public Idol getRandomIdol() {
-        List<Idol> idols = getActiveIdols();
+        List<Idol> idols = getIdols();
         return idols.get((int) (Math.random() * idols.size()));
     }
 
-    public String getRandomPhoto(String id) {
+    public Idol getRandomIdolByRange(int min, int max) {
+        List<Idol> idols = getActiveIdolsByRange(min, max);
+        return idols.get((int) (Math.random() * idols.size()));
+    }
+
+    public String getRandomPhoto(Integer id) {
         Idol idol = getIdolById(id);
         if (idol == null) {
             return null;
@@ -172,5 +185,9 @@ public class KpopService {
         price /= 10;
 
         return price;
+    }
+
+    public List<Idol> getIdolByApiName(String name) {
+        return idolRepository.findByApiName(name);
     }
 }

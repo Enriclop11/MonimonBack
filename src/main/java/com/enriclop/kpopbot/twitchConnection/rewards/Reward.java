@@ -12,5 +12,7 @@ public interface Reward {
 
     public boolean isModOnly();
 
+    public int getCooldown();
+
     public void execute(TwitchConnection connection, RewardRedeemedEvent event);
 }

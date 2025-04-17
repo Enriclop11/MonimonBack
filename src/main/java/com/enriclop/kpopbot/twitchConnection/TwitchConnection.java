@@ -10,6 +10,7 @@ import com.enriclop.kpopbot.servicio.ItemsService;
 import com.enriclop.kpopbot.servicio.UserService;
 import com.enriclop.kpopbot.twitchConnection.commands.*;
 import com.enriclop.kpopbot.twitchConnection.rewards.CatchReward;
+import com.enriclop.kpopbot.twitchConnection.rewards.GachaReward;
 import com.enriclop.kpopbot.twitchConnection.rewards.Reward;
 import com.enriclop.kpopbot.twitchConnection.settings.Prices;
 import com.enriclop.kpopbot.twitchConnection.threads.Combat;
@@ -23,6 +24,7 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.chat.events.channel.FollowEvent;
+import com.github.twitch4j.eventsub.domain.RedemptionStatus;
 import com.github.twitch4j.helix.domain.Chatter;
 import com.github.twitch4j.helix.domain.ChattersList;
 import com.github.twitch4j.helix.domain.ModeratorList;
@@ -36,9 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Getter
@@ -84,6 +84,8 @@ public class TwitchConnection {
 
     com.github.twitch4j.helix.domain.User channel;
 
+    private Map<String, List<String>> cooldowns = new HashMap<>();
+
     @Autowired
     private KpopPhotos kpopPhotos;
 
@@ -101,9 +103,11 @@ public class TwitchConnection {
         commands.add(new SelectCommand());
         commands.add(new TradeCommand());
         commands.add(new GiftCommand());
+        commands.add(new GachaCommand());
 
         rewards = new ArrayList<>();
         rewards.add(new CatchReward());
+        rewards.add(new GachaReward());
     }
 
 
@@ -163,6 +167,8 @@ public class TwitchConnection {
             if (commandCalled == null) return;
             if (!commandCalled.isActive()) return;
             if (commandCalled.isModOnly() && !checkMod(event.getUser().getId())) return;
+            if (!checkPoints(commandCalled, event.getUser().getId())) return;
+            if (commandCalled.getCooldown() > 0 && checkCooldown(commandCalled.getCommand(), event.getUser().getId())) return;
 
             commandCalled.execute(this, event);
         });
@@ -176,6 +182,8 @@ public class TwitchConnection {
             if (rewardCalled == null) return;
             if (!rewardCalled.isActive()) return;
             if (rewardCalled.isModOnly() && !checkMod(event.getRedemption().getUser().getId())) return;
+            if (rewardCalled.getCooldown() > 0 && checkCooldown(rewardCalled.getReward(), event.getRedemption().getUser().getId())) return;
+
 
             rewardCalled.execute(this, event);
         });
@@ -190,9 +198,67 @@ public class TwitchConnection {
 
     }
 
+    private boolean checkPoints(Command commandCalled, String id) {
+        User user = userService.getUserByTwitchId(id);
+        if (user == null) {
+            start(id);
+            user = userService.getUserByTwitchId(id);
+        }
+
+        if (user.getScore() < commandCalled.getPrice()) {
+            sendMessage("No tienes suficientes puntos para usar este comando!");
+            return false;
+        }
+
+        if (commandCalled.getPrice() > 0) {
+            user.setScore(user.getScore() - commandCalled.getPrice());
+            userService.saveUser(user);
+        }
+
+        return true;
+    }
+
     public boolean checkMod(String userId) {
+        if (channel.getId().equals(userId)) return true;
+
         ModeratorList resultList = twitchClient.getHelix().getModerators(settings.getTokenChannel(), getChannel().getId(), null, null, null).execute();
         return resultList.getModerators().stream().anyMatch(m -> m.getUserId().equals(userId));
+    }
+
+    public boolean checkCooldown(String command, String id) {
+        if (cooldowns.containsKey(command)) {
+            List<String> users = cooldowns.get(command);
+            if (users.contains(id)) {
+                sendMessage("Espera un momento antes de volver a usar este comando!");
+                return true;
+            } else {
+                cooldowns.put(command, users);
+            }
+        } else {
+            List<String> users = new ArrayList<>();
+            cooldowns.put(command, users);
+        }
+
+        return false;
+    }
+
+    public void addCooldown(String command, String id, int minutesCD) {
+        if (cooldowns.containsKey(command)) {
+            List<String> users = cooldowns.get(command);
+            users.add(id);
+        } else {
+            List<String> users = new ArrayList<>();
+            users.add(id);
+            cooldowns.put(command, users);
+        }
+
+        java.util.Timer timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                cooldowns.get(command).remove(id);
+            }
+        }, (long) minutesCD * 60 * 1000);
     }
 
     public Collection<Chatter> getChatters() {
@@ -347,5 +413,15 @@ public class TwitchConnection {
             KpopPhotos.regeneratePhotocard(card);
             cardService.saveCard(card);
         }
+    }
+
+    public void returnRedemption(String rewardId, String id) {
+              twitchClient.getHelix().updateRedemptionStatus(
+                settings.getTokenChannel(),
+                channel.getId(),
+                rewardId,
+                List.of(id),
+                RedemptionStatus.CANCELED
+        ).execute();
     }
 }

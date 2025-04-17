@@ -16,7 +16,7 @@ public class PhotoCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String idolID;
+    private Integer idolID;
 
     private String name;
 

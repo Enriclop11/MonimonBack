@@ -5,6 +5,7 @@ import com.enriclop.kpopbot.dto.IdolListDTO;
 import com.enriclop.kpopbot.modelo.Idol;
 import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @Service
 public class KpopPhotos {
 
@@ -79,6 +81,7 @@ public class KpopPhotos {
                     return null;
                 }
 
+
                 images.removeIf(image -> {
                     for (String banned : bannedPhotos) {
                         if (image.attr("src").contains(banned)) {
@@ -86,14 +89,8 @@ public class KpopPhotos {
                         }
                     }
 
-                    if (!image.attr("src").contains(name) && !image.attr("src").contains(group)) {
-                        return true;
-                    }
-
-                    return false;
+                    return !image.attr("src").contains(name) && !image.attr("src").contains(group) && !image.attr("src").contains(apiName);
                 });
-
-                //images.forEach(image -> System.out.println("https://kpopping.com" + image.attr("src")));
 
                 Random random = new Random();
                 Element randomImage = images.get(random.nextInt(images.size()));
@@ -114,12 +111,28 @@ public class KpopPhotos {
     }
 
     public PhotoCard generateRandomPhotocard() {
+        try {
 
-        Idol idol = kpopService.getRandomIdol();
+            Idol idol = kpopService.getRandomIdol();
+
+            String photo = getRandomPhoto(idol.getApiName(), idol.getName(), idol.getBand());
+            if (photo == null) {
+                return generateRandomPhotocard();
+            }
+
+            return new PhotoCard(idol, photo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return generateRandomPhotocard();
+        }
+    }
+
+    public PhotoCard generateRandomPhotocardByRange(int min, int max) {
+        Idol idol = kpopService.getRandomIdolByRange(min, max);
 
         String photo = getRandomPhoto(idol.getApiName(), idol.getName(), idol.getBand());
         if (photo == null) {
-            return null;
+            return generateRandomPhotocardByRange(min, max);
         }
 
         return new PhotoCard(idol, photo);

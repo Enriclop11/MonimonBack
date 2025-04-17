@@ -10,7 +10,7 @@ public class BoosterPackDTO {
     private String name;
     private String image;
     private double price;
-    private List<String> idolIds;
+    private List<Integer> idolIds;
     private List<CustomCardDTO> customCards;
 
 }

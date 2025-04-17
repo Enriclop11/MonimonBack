@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class MarketplaceDTO {
     private int id;
-    private String idolID;
+    private int idolID;
     private String name;
     private String apiName;
     private String fullName;
@@ -25,7 +25,7 @@ public class MarketplaceDTO {
     private int ownerId;
     private String owner;
 
-    public MarketplaceDTO(int id, String idolID, String name, String apiName, String fullName, String band, String photo, int hp, int defense, int attack, Types type, Types type2, int popularity, int price, int ownerId, String ownerUsername) {
+    public MarketplaceDTO(int id, int idolID, String name, String apiName, String fullName, String band, String photo, int hp, int defense, int attack, Types type, Types type2, int popularity, int price, int ownerId, String ownerUsername) {
         this.id = id;
         this.idolID = idolID;
         this.name = name;
@@ -37,7 +37,11 @@ public class MarketplaceDTO {
         this.defense = defense;
         this.attack = attack;
         this.type = type.getDisplayName();
-        this.type2 = type2.getDisplayName();
+        if (type2 != null) {
+            this.type2 = type2.getDisplayName();
+        } else {
+            this.type2 = String.valueOf(Types.NONE);
+        }
         this.popularity = popularity;
         this.price = price;
         this.ownerId = ownerId;

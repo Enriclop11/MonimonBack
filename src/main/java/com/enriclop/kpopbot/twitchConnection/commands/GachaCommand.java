@@ -1,23 +1,25 @@
 package com.enriclop.kpopbot.twitchConnection.commands;
 
+import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class RefreshUsernameCommand implements Command {
+public class GachaCommand implements Command {
+
     @Override
     public String getName() {
-        return "RefreshUsername";
+        return "Gacha";
     }
 
     @Override
     public String getCommand() {
-        return "!refreshUsername";
+        return "!gacha";
     }
 
     @Override
     public String getDescription() {
-        return "Refresca el nombre de usuario en la base de datos";
+        return "Haz una tirada en el gacha";
     }
 
     @Override
@@ -32,7 +34,7 @@ public class RefreshUsernameCommand implements Command {
 
     @Override
     public int getPrice() {
-        return 0;
+        return 100;
     }
 
     @Override
@@ -42,14 +44,20 @@ public class RefreshUsernameCommand implements Command {
 
     @Override
     public void execute(TwitchConnection connection, ChannelMessageEvent event) {
-        try {
-            User user = connection.getUserService().getUserByTwitchId(event.getChannel().getId());
-            if (user != null && !user.getUsername().equals(event.getUser().getName().toLowerCase())) {
-                user.setUsername(event.getUser().getName().toLowerCase());
-                connection.getUserService().saveUser(user);
-            }
-        } catch (Exception e) {
-            connection.start(event.getUser().getId());
+
+        User user = connection.getUserService().getUserByTwitchId(event.getUser().getId());
+
+        PhotoCard randomCard =  connection.getKpopPhotos().generateRandomPhotocard();
+
+        if (randomCard == null) {
+            connection.sendMessage("No se ha podido generar una carta");
+            return;
         }
+
+        randomCard.setUser(user);
+
+        connection.getCardService().saveCard(randomCard);
+
+        connection.sendMessage( user.getUsernameDisplay() + " te ha tocado una carta de " + randomCard.getName() + " (" + randomCard.getBand() + ")\n");
     }
 }

@@ -1,5 +1,6 @@
 package com.enriclop.kpopbot.dto;
 
+import com.enriclop.kpopbot.enums.Types;
 import com.enriclop.kpopbot.modelo.PhotoCard;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ public class PhotoCardDTO {
 
     private Integer id;
 
-    private String idolID;
+    private Integer idolID;
 
     private String name;
 
@@ -48,8 +49,13 @@ public class PhotoCardDTO {
         this.defense = card.getDefense();
         this.attack = card.getAttack();
         this.type = card.getType().getDisplayName();
-        this.type2 = card.getType2().getDisplayName();
         this.popularity = card.getPopularity();
+
+        if (type2 != null) {
+            this.type2 = card.getType2().getDisplayName();
+        } else {
+            this.type2 = String.valueOf(Types.NONE);
+        }
     }
 
     public static List<PhotoCardDTO> fromPhotoCards(List<PhotoCard> photoCards) {

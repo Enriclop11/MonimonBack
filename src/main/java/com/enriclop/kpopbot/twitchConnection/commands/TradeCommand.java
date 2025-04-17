@@ -34,6 +34,16 @@ public class TradeCommand implements Command {
     }
 
     @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public int getCooldown() {
+        return 0;
+    }
+
+    @Override
     public void execute(TwitchConnection connection, ChannelMessageEvent event) {
 
         UserService userService = connection.getUserService();

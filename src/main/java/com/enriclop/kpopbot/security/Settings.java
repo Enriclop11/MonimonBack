@@ -22,6 +22,8 @@ public class Settings {
     private String adminPassword;
     private AdminUser adminUser;
     private String clientId;
+    private String spotifyClientId;
+    private String spotifyClientSecret;
 
     @PostConstruct
     public void initAdminUser() {

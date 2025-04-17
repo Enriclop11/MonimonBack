@@ -45,7 +45,7 @@ public class KpopBoosterPack {
 
         Random randomIdol = new Random();
         int randomIdolIndex = randomIdol.nextInt(boosterPack.getIdolIds().size());
-        String idolId = boosterPack.getIdolIds().get(randomIdolIndex);
+        Integer idolId = boosterPack.getIdolIds().get(randomIdolIndex);
 
         CustomCardDTO randomCommonCard = new CustomCardDTO(idolId, kpopService.getRandomPhoto(idolId), 1);
 

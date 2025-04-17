@@ -31,6 +31,16 @@ public class HelpCommand implements Command{
     }
 
     @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public int getCooldown() {
+        return 0;
+    }
+
+    @Override
     public void execute(TwitchConnection connection, ChannelMessageEvent event) {
 
         String[] message = event.getMessage().split(" ");
@@ -38,7 +48,7 @@ public class HelpCommand implements Command{
         if (message.length > 1) {
             for (Command command : connection.getCommands()) {
                 if (command.getCommand().equals("!" + message[1])) {
-                    connection.sendMessage(command.getDescription());
+                    connection.sendMessage(command.getDescription() + " (Precio: " + command.getPrice() + ")");
                     return;
                 }
             }
@@ -48,7 +58,7 @@ public class HelpCommand implements Command{
 
         StringBuilder commands = new StringBuilder("Comandos disponibles: ");
         for (Command command : connection.getCommands()) {
-            commands.append(command.getCommand()).append(", ");
+            if (command.isActive() && !command.isModOnly()) commands.append(command.getCommand()).append(", ");
         }
         commands.delete(commands.length() - 2, commands.length());
         connection.sendMessage(commands.toString());

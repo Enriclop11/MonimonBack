@@ -26,12 +26,22 @@ public class CatchCommand implements Command {
 
     @Override
     public boolean isActive() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isModOnly() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public int getCooldown() {
+        return 0;
     }
 
     @Override

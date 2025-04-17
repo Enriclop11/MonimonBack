@@ -31,6 +31,16 @@ public class LeaderboardCommand implements Command {
     }
 
     @Override
+    public int getPrice() {
+        return 0;
+    }
+
+    @Override
+    public int getCooldown() {
+        return 0;
+    }
+
+    @Override
     public void execute(TwitchConnection connection, ChannelMessageEvent event) {
         connection.sendMessage("Leaderboard: " + connection.getSettings().getDomain() + "/leaderboard");
     }

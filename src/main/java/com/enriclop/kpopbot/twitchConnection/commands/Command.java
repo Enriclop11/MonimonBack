@@ -15,6 +15,10 @@ public interface Command {
 
     public boolean isModOnly();
 
+    public int getPrice();
+
+    public int getCooldown();
+
     public void execute(TwitchConnection connection, ChannelMessageEvent event);
 
 }

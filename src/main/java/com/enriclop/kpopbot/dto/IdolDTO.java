@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class IdolDTO {
     @JsonProperty("ID")
-    private String id;
+    private Integer id;
     private String name;
     private String fullName;
     private String apiName;

@@ -13,8 +13,10 @@ import java.util.Objects;
 @Table(name = "idols")
 @Data
 public class Idol {
+
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     private String fullName;
     private String apiName;
