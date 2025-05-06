@@ -27,9 +27,11 @@ public class SettingsController {
 
     @GetMapping("/settings")
     public String settings(Model model) {
+        /*
         int cdMinutes;
         int maxCdMinutes;
         boolean spawnActive;
+
 
         if (twitchConnection.getSpawn() != null) {
             cdMinutes = twitchConnection.getSpawn().cdMinutes;
@@ -41,12 +43,16 @@ public class SettingsController {
             spawnActive = false;
         }
 
+
+
         boolean haveBotToken = !settings.getTokenBot().isEmpty();
         boolean haveChannelToken = !settings.getTokenChannel().isEmpty();
         //boolean haveDiscordToken = !settings.tokenDiscord.isEmpty();
 
         SettingsDTO settings = new SettingsDTO(cdMinutes, maxCdMinutes, spawnActive, this.settings.getChannelName(), haveChannelToken, this.settings.getBotUsername(), haveBotToken, this.settings.getDomain(), true);
         model.addAttribute("settings", settings);
+
+         */
         return "settings/settings";
     }
 
@@ -55,7 +61,7 @@ public class SettingsController {
 
         if (settings.getCdMinutes() < 1) settings.setCdMinutes(1);
 
-        twitchConnection.setSpawn(settings.isSpawnActive(), settings.getCdMinutes(), settings.getMaxCdMinutes());
+        //twitchConnection.setSpawn(settings.isSpawnActive(), settings.getCdMinutes(), settings.getMaxCdMinutes());
 
         boolean changed = false;
 

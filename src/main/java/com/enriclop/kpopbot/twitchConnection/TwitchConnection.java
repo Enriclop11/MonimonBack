@@ -9,12 +9,13 @@ import com.enriclop.kpopbot.servicio.CardService;
 import com.enriclop.kpopbot.servicio.ItemsService;
 import com.enriclop.kpopbot.servicio.UserService;
 import com.enriclop.kpopbot.twitchConnection.commands.*;
+import com.enriclop.kpopbot.twitchConnection.events.Event;
+import com.enriclop.kpopbot.twitchConnection.events.Spawn;
 import com.enriclop.kpopbot.twitchConnection.rewards.CatchReward;
 import com.enriclop.kpopbot.twitchConnection.rewards.GachaReward;
 import com.enriclop.kpopbot.twitchConnection.rewards.Reward;
 import com.enriclop.kpopbot.twitchConnection.settings.Prices;
 import com.enriclop.kpopbot.twitchConnection.threads.Combat;
-import com.enriclop.kpopbot.twitchConnection.threads.Spawn;
 import com.enriclop.kpopbot.twitchConnection.threads.Trade;
 import com.enriclop.kpopbot.utilities.Utilities;
 import com.enriclop.kpopbot.websockets.card.CardInfoService;
@@ -27,7 +28,8 @@ import com.github.twitch4j.chat.events.channel.FollowEvent;
 import com.github.twitch4j.eventsub.domain.RedemptionStatus;
 import com.github.twitch4j.helix.domain.Chatter;
 import com.github.twitch4j.helix.domain.ChattersList;
-import com.github.twitch4j.helix.domain.ModeratorList;
+import com.github.twitch4j.helix.domain.Moderator;
+import com.github.twitch4j.pubsub.domain.ChannelPointsRedemption;
 import com.github.twitch4j.pubsub.events.ChannelSubscribeEvent;
 import com.github.twitch4j.pubsub.events.RewardRedeemedEvent;
 import com.github.twitch4j.util.PaginationUtil;
@@ -36,6 +38,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -80,6 +83,8 @@ public class TwitchConnection {
 
     List<Reward> rewards;
 
+    List<Event> events;
+
     OAuth2Credential streamerCredential;
 
     com.github.twitch4j.helix.domain.User channel;
@@ -108,6 +113,9 @@ public class TwitchConnection {
         rewards = new ArrayList<>();
         rewards.add(new CatchReward());
         rewards.add(new GachaReward());
+
+        events = new ArrayList<>();
+        events.add(new Spawn());
     }
 
 
@@ -137,9 +145,9 @@ public class TwitchConnection {
          streamerCredential = new OAuth2Credential("twitch", settings.getoAuthTokenChannel());
 
          twitchClient.getPubSub().listenForChannelPointsRedemptionEvents(null, channel.getId());
-         twitchClient.getPubSub().listenForSubscriptionEvents(streamerCredential, channel.getId());
+        // twitchClient.getPubSub().listenForSubscriptionEvents(streamerCredential, channel.getId());
          
-         twitchClient.getClientHelper().enableFollowEventListener(settings.getChannelName());
+         //twitchClient.getClientHelper().enableFollowEventListener(settings.getChannelName());
 
          commands();
 
@@ -156,6 +164,8 @@ public class TwitchConnection {
         eventManager = twitchClient.getEventManager();
 
         eventManager.onEvent(ChannelMessageEvent.class, event -> {
+            if (!isLive() && !checkMod(event.getUser().getId())) return;
+
             if (!event.getMessage().startsWith("!")) return;
 
             start(event.getUser().getId());
@@ -167,13 +177,15 @@ public class TwitchConnection {
             if (commandCalled == null) return;
             if (!commandCalled.isActive()) return;
             if (commandCalled.isModOnly() && !checkMod(event.getUser().getId())) return;
-            if (!checkPoints(commandCalled, event.getUser().getId())) return;
+            if (commandCalled.getPrice() > 0 && !checkPoints(commandCalled, event.getUser().getId())) return;
             if (commandCalled.getCooldown() > 0 && checkCooldown(commandCalled.getCommand(), event.getUser().getId())) return;
 
             commandCalled.execute(this, event);
         });
 
         eventManager.onEvent(RewardRedeemedEvent.class, event -> {
+            if (!isLive() && !checkMod(event.getRedemption().getUser().getId())) return;
+
             String reward = event.getRedemption().getReward().getTitle();
 
             String finalReward = reward.toLowerCase();
@@ -182,7 +194,10 @@ public class TwitchConnection {
             if (rewardCalled == null) return;
             if (!rewardCalled.isActive()) return;
             if (rewardCalled.isModOnly() && !checkMod(event.getRedemption().getUser().getId())) return;
-            if (rewardCalled.getCooldown() > 0 && checkCooldown(rewardCalled.getReward(), event.getRedemption().getUser().getId())) return;
+            if (rewardCalled.getCooldown() > 0 && checkCooldown(rewardCalled.getReward(), event.getRedemption().getUser().getId())) {
+                returnRedemption(event.getRedemption());
+                return;
+            }
 
 
             rewardCalled.execute(this, event);
@@ -219,10 +234,25 @@ public class TwitchConnection {
     }
 
     public boolean checkMod(String userId) {
-        if (channel.getId().equals(userId)) return true;
+        List<User> mods = settings.getModeratorUsers();
 
-        ModeratorList resultList = twitchClient.getHelix().getModerators(settings.getTokenChannel(), getChannel().getId(), null, null, null).execute();
-        return resultList.getModerators().stream().anyMatch(m -> m.getUserId().equals(userId));
+        return mods.stream().anyMatch(mod -> (mod.getTwitchId() + "").equals(userId));
+    }
+
+    @Scheduled(fixedRate = 36000000)
+    public void getAllMods() {
+        List<User> mods = new ArrayList<>();
+        mods.add(userService.getUserByTwitchId(channel.getId()));
+        for (String mod : settings.getModerators()) {
+            User user = userService.getUserByUsername(mod);
+            if (user != null) mods.add(user);
+        }
+        for (Moderator mod : twitchClient.getHelix().getModerators(settings.getTokenChannel(), getChannel().getId(), null, null, null).execute().getModerators()) {
+            User user = userService.getUserByTwitchId(mod.getUserId());
+            if (user != null) mods.add(user);
+        }
+
+        settings.setModeratorUsers(mods);
     }
 
     public boolean checkCooldown(String command, String id) {
@@ -293,6 +323,7 @@ public class TwitchConnection {
     }
 
 
+    /*
     public void setSpawn(Boolean active, int cdMinutes, int maxCdMinutes) {
         if (spawn != null) {
             spawn.active = false;
@@ -306,6 +337,8 @@ public class TwitchConnection {
             log.info("Stopping spawn");
         }
     }
+
+     */
 
     public void start (String twitchId) {
         if (userService.getUserByTwitchId(twitchId) == null) {
@@ -352,17 +385,17 @@ public class TwitchConnection {
     }
 
     public PhotoCard spawnPhoto() {
-        PhotoCard newPokemon = kpopPhotos.generateRandomPhotocard();
+        PhotoCard newCard = kpopPhotos.generateRandomPhotocard();
 
-        if (newPokemon != null) {
-            wildCard = newPokemon;
+        if (newCard != null) {
+            wildCard = newCard;
 
             try {
                 sendMessage("Ha aparecido una foto de " + Utilities.firstLetterToUpperCase(wildCard.getName()) + " (" + Utilities.firstLetterToUpperCase(wildCard.getBand()) + ")" + " en el suelo!");
                 cardInfoClient.sendWildCard(wildCard);
                 return wildCard;
             } catch (Exception e) {
-                System.out.println("Error al enviar el sprite del pokemon");
+                log.error("Error al enviar el sprite del pokemon");
             }
         }
         return null;
@@ -381,9 +414,9 @@ public class TwitchConnection {
 
         int catchDifficulty = 101 - wildCard.getPopularity();
 
-        System.out.println(random  + " / " + catchDifficulty);
+        log.info(random  + " / " + catchDifficulty);
 
-        boolean caught = random < catchDifficulty;
+        boolean caught = random <= catchDifficulty;
 
         cardInfoClient.sendCatchPokemon(pokeball.toString(), caught);
 
@@ -415,12 +448,13 @@ public class TwitchConnection {
         }
     }
 
-    public void returnRedemption(String rewardId, String id) {
+    public void returnRedemption(ChannelPointsRedemption redemption) {
+
               twitchClient.getHelix().updateRedemptionStatus(
                 settings.getTokenChannel(),
                 channel.getId(),
-                rewardId,
-                List.of(id),
+                redemption.getReward().getId(),
+                List.of(redemption.getId()),
                 RedemptionStatus.CANCELED
         ).execute();
     }

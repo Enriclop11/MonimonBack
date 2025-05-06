@@ -5,41 +5,18 @@ import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class GachaCommand implements Command {
+public class GachaCommand extends Command {
 
-    @Override
-    public String getName() {
-        return "Gacha";
-    }
-
-    @Override
-    public String getCommand() {
-        return "!gacha";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Haz una tirada en el gacha";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 100;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public GachaCommand() {
+        super(
+            "Gacha",
+            "!gacha",
+            "Haz una tirada en el gacha",
+            true,
+            false,
+            250,
+            0
+        );
     }
 
     @Override
@@ -53,6 +30,8 @@ public class GachaCommand implements Command {
             connection.sendMessage("No se ha podido generar una carta");
             return;
         }
+
+        user = connection.getUserService().getUserById(user.getId());
 
         randomCard.setUser(user);
 

@@ -1,11 +1,14 @@
 package com.enriclop.kpopbot.security;
 
 import com.enriclop.kpopbot.dto.AdminUser;
+import com.enriclop.kpopbot.modelo.User;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 @Getter
@@ -24,6 +27,9 @@ public class Settings {
     private String clientId;
     private String spotifyClientId;
     private String spotifyClientSecret;
+
+    private List<String> moderators;
+    private List<User> moderatorUsers;
 
     @PostConstruct
     public void initAdminUser() {

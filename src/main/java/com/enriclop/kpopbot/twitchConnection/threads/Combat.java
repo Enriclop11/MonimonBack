@@ -57,7 +57,6 @@ public class Combat extends Thread{
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-
     public Combat(User user1, User user2, UserService userService, CardService cardService, TwitchClient twitchClient, CardInfoService cardInfoService, Settings settings, List<PhotoCard> team1, List<PhotoCard> team2) {
         this.userService = userService;
         this.cardService = cardService;
@@ -116,23 +115,25 @@ public class Combat extends Thread{
 
         cardInfoService.startCombat(card1, card2);
 
-        scheduleWait(2, this::combat);
+        // Schedule the combat to start after 2 seconds
+        scheduler.schedule(this::combat, 2, TimeUnit.SECONDS);
     }
 
     public void combat() {
         if (card1.getCurrentHp() > 0 && card2.getCurrentHp() > 0) {
-            scheduleWait(1, () -> {
+            // Schedule the first attack after 1 second
+            scheduler.schedule(() -> {
                 attack(card1, card2);
                 if (card2.getCurrentHp() > 0) {
-                    scheduleWait(1, () -> {
+                    // Schedule the second attack after another 1 second
+                    scheduler.schedule(() -> {
                         attack(card2, card1);
-                        combat();
-                    }
-                    );
+                        combat(); // Recursively schedule the next combat round
+                    }, 1, TimeUnit.SECONDS);
                 } else {
                     checkWinner();
                 }
-            });
+            }, 1, TimeUnit.SECONDS);
         } else {
             checkWinner();
         }
@@ -156,10 +157,6 @@ public class Combat extends Thread{
         }
     }
 
-    private void scheduleWait(int seconds, Runnable task) {
-        scheduler.schedule(task, seconds, TimeUnit.SECONDS);
-    }
-
     public void endCombat(){
         winner = userService.getUserById(winner.getId());
         winner.addScore(100);
@@ -171,6 +168,8 @@ public class Combat extends Thread{
         cardInfoService.endCombat();
         active = false;
         winner = null;
+
+        scheduler.shutdown();
     }
 
     public void changeCard(Integer user) {
@@ -226,14 +225,6 @@ public class Combat extends Thread{
         }
 
         cardInfoService.attackCombat(card1, card2, (int) damage);
-    }
-
-    private void wait(int seconds) {
-        try {
-            Thread.sleep(1000 * seconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 }

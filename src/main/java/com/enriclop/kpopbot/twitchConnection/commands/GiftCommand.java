@@ -5,40 +5,18 @@ import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class GiftCommand implements Command{
-    @Override
-    public String getName() {
-        return "Gift";
-    }
+public class GiftCommand extends Command {
 
-    @Override
-    public String getCommand() {
-        return "!gift";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Regala una carta a otro usuario";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public GiftCommand() {
+        super(
+                "Gift",
+                "!gift",
+                "Regala una carta a otro usuario",
+                true,
+                false,
+                0,
+                0
+        );
     }
 
     @Override

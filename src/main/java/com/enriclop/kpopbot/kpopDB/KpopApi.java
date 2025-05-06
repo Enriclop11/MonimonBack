@@ -2,7 +2,10 @@ package com.enriclop.kpopbot.kpopDB;
 
 import com.enriclop.kpopbot.enums.Types;
 import com.enriclop.kpopbot.modelo.Idol;
+import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.enriclop.kpopbot.security.Settings;
+import com.enriclop.kpopbot.servicio.CardService;
+import com.enriclop.kpopbot.servicio.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,12 @@ public class KpopApi {
     private KpopService kpopService;
 
     @Autowired
+    private CardService cardService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     Settings settings;
 
     private static final String WEB_URL = "https://kpop.fandom.com/wiki/";
@@ -39,10 +48,14 @@ public class KpopApi {
 
     private static final List<String> EXCLUDED_GROUPS = List.of(
             "YOUNGEST",
-            "Kirots",
+            "KIROTS",
             "SONOKI",
             "KIDOLS",
-            "VIVIDIVA"
+            "VIVIDIVA",
+            "MERAMERAHEART",
+            "LUMINOUS ELF",
+            "BELLAMAFIA",
+            "CUTIEL"
     );
 
     private static List<String> getAllFemaleGroups() throws IOException {
@@ -253,5 +266,43 @@ public class KpopApi {
         }
 
         return 0;
+    }
+
+    @Scheduled(fixedRate = 144000000)
+    public void removeBannedIdols() {
+        List<Idol> idols = kpopService.getIdols();
+        idols.forEach(idol -> {
+            if (EXCLUDED_GROUPS.contains(idol.getBand().toUpperCase())) {
+                log.info("Removing idol: " + idol.getApiName());
+                kpopService.deleteIdolById(idol.getId());
+            }
+
+            if (idol.getName().contains("[") || idol.getName().contains("]")) {
+                String name = idol.getName();
+                name = name.replaceAll("\\[.*?\\]", "");
+                idol.setName(name);
+                kpopService.saveIdol(idol);
+
+                log.info("Renaming idol: " + idol.getName());
+            }
+        });
+
+        List<PhotoCard> cards = cardService.getCards();
+        cards.forEach(photoCard -> {
+            if (EXCLUDED_GROUPS.contains(photoCard.getBand().toUpperCase())) {
+                log.info("Removing card: " + photoCard.getName() + " from user: " + photoCard.getUser().getUsername());
+
+                cardService.deleteCardById(photoCard.getId());
+            }
+
+            if (photoCard.getName().contains("[") || photoCard.getName().contains("]")) {
+                String name = photoCard.getName();
+                name = name.replaceAll("\\[.*?\\]", "");
+                photoCard.setName(name);
+                cardService.saveCard(photoCard);
+
+                log.info("Renaming card: " + photoCard.getName() + " from user: " + photoCard.getUser().getUsername());
+            }
+        });
     }
 }

@@ -30,7 +30,8 @@ public class KpopPhotos {
             "kpopping_logo",
             "kpopping-logo",
             "momoshogun",
-            "KpopMart-Logo"
+            "KpopMart-Logo",
+            "Orange_Kpop_wiki_wordmark"
     };
 
 
@@ -38,7 +39,7 @@ public class KpopPhotos {
     public static String getRandomPhoto(String apiName, String name, String group) {
         String url = "https://kpop.fandom.com/wiki/" + apiName + "/Gallery";
 
-        System.out.println(url);
+        log.info("Getting photo from: " + url);
         try {
             Document doc = Jsoup.connect(url).get();
             List<Element> images = doc.select("img");
@@ -51,6 +52,10 @@ public class KpopPhotos {
                     if (image.attr("src").contains(banned)) {
                         return true;
                     }
+                }
+
+                if (image.attr("src").equals("htt") || image.attr("src").equals("https")) {
+                    return true;
                 }
 
                 if (!image.attr("src").contains(name) && !image.attr("src").contains(group)) {
@@ -74,6 +79,7 @@ public class KpopPhotos {
         } catch (IOException e) {
             String url2 = "https://kpop.fandom.com/wiki/" + apiName;
 
+            log.info("Getting photo from: " + url2);
             try {
                 Document doc = Jsoup.connect(url2).get();
                 List<Element> images = doc.select("img");
@@ -92,6 +98,10 @@ public class KpopPhotos {
                     return !image.attr("src").contains(name) && !image.attr("src").contains(group) && !image.attr("src").contains(apiName);
                 });
 
+                if (images.isEmpty()) {
+                    return null;
+                }
+
                 Random random = new Random();
                 Element randomImage = images.get(random.nextInt(images.size()));
                 String imageUrl = randomImage.attr("src");
@@ -99,7 +109,7 @@ public class KpopPhotos {
                 imageUrl = imageUrl.substring(0, imageUrl.indexOf(".png") + 4);
 
                 if (imageUrl.equals("http")) {
-                    return getRandomPhoto(apiName, name, group);
+                    return null;
                 }
 
                 return imageUrl;
@@ -115,8 +125,14 @@ public class KpopPhotos {
 
             Idol idol = kpopService.getRandomIdol();
 
-            String photo = getRandomPhoto(idol.getApiName(), idol.getName(), idol.getBand());
-            if (photo == null) {
+            String photo;
+            try {
+                photo = getRandomPhoto(idol.getApiName(), idol.getName(), idol.getBand());
+                if (photo == null) {
+                    return generateRandomPhotocard();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 return generateRandomPhotocard();
             }
 
@@ -130,8 +146,14 @@ public class KpopPhotos {
     public PhotoCard generateRandomPhotocardByRange(int min, int max) {
         Idol idol = kpopService.getRandomIdolByRange(min, max);
 
-        String photo = getRandomPhoto(idol.getApiName(), idol.getName(), idol.getBand());
-        if (photo == null) {
+        String photo;
+        try {
+            photo = getRandomPhoto(idol.getApiName(), idol.getName(), idol.getBand());
+            if (photo == null) {
+                return generateRandomPhotocardByRange(min, max);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             return generateRandomPhotocardByRange(min, max);
         }
 

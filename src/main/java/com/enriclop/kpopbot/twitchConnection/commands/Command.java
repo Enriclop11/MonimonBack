@@ -2,23 +2,33 @@ package com.enriclop.kpopbot.twitchConnection.commands;
 
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public interface Command {
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Command {
 
-    public String getName();
+    private String name = "Command";
 
-    public String getCommand();
+    private String command = "!command";
 
-    public String getDescription();
+    private String description = "Comando de ejemplo";
 
-    public boolean isActive();
+    private boolean active = false;
 
-    public boolean isModOnly();
+    private boolean modOnly = false;
 
-    public int getPrice();
+    private int price = 0;
 
-    public int getCooldown();
+    private int cooldown = 0;
 
-    public void execute(TwitchConnection connection, ChannelMessageEvent event);
+    public void execute(TwitchConnection connection, ChannelMessageEvent event) {
+        connection.sendMessage("Comando no implementado");
+    }
 
 }

@@ -31,7 +31,9 @@ public class UserProfileDto {
 
     private List<Badge> badges;
 
-    UserProfileDto(User user) {
+    private boolean isModerator;
+
+    UserProfileDto(User user, boolean isModerator) {
         this.id = user.getId();
         this.twitchId = user.getTwitchId();
         this.username = user.getUsername();
@@ -39,6 +41,7 @@ public class UserProfileDto {
         this.score = user.getScore();
         this.avatar = user.getAvatar();
         this.photoCards = user.getPhotoCards().size();
+        this.isModerator = isModerator;
 
         List<PhotoCard> userPhotoCards = user.getPhotoCards();
         List<Integer> selectedCards = user.getSelectedCards();
@@ -55,11 +58,14 @@ public class UserProfileDto {
         this.badges = user.getBadges();
     }
 
-    public static UserProfileDto fromUser(User user) {
-        return new UserProfileDto(user);
+    public static UserProfileDto fromUser(User user, boolean isModerator) {
+        return new UserProfileDto(user, isModerator);
     }
 
-    public static List<UserProfileDto> fromUsers(List<User> users) {
-        return users.stream().map(UserProfileDto::new).toList();
+    public static List<UserProfileDto> fromUsers(List<User> users, List<String> moderatorIds) {
+        return users.stream().map(user -> {
+            boolean isModerator = moderatorIds.contains(user.getUsername());
+            return new UserProfileDto(user, isModerator);
+        }).toList();
     }
 }

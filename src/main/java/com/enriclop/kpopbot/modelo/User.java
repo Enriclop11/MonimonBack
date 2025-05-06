@@ -4,6 +4,7 @@ import com.enriclop.kpopbot.utilities.Utilities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<PhotoCard> photoCards = new ArrayList<>();
 
+
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(
             name = "user_badge",

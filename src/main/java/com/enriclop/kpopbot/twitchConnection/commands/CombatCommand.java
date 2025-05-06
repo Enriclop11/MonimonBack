@@ -15,40 +15,18 @@ import java.util.stream.Collectors;
 
 
 @Slf4j
-public class CombatCommand implements Command {
-    @Override
-    public String getName() {
-        return "Combat";
-    }
+public class CombatCommand extends Command {
 
-    @Override
-    public String getCommand() {
-        return "!combat";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Empieza un combate con otro usuario";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public CombatCommand() {
+        super(
+            "Combat",
+            "!combat",
+            "Empieza un combate con otro usuario",
+            true,
+            false,
+            0,
+            0
+        );
     }
 
     @Override
@@ -81,7 +59,7 @@ public class CombatCommand implements Command {
                 username = username.substring(1);
             }
 
-            player2 = connection.getUserService().getUserByUsername(username);
+            player2 = connection.getUserService().getUserByUsername(username.toLowerCase());
 
             if (player2 == null) {
                 connection.sendMessage("El usuario no existe!");

@@ -4,41 +4,18 @@ import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class WatchtimeCommand implements Command {
+public class WatchtimeCommand extends Command {
 
-    @Override
-    public String getName() {
-        return "Watchtime";
-    }
-
-    @Override
-    public String getCommand() {
-        return "!watchtime";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Muestra el tiempo que llevas viendo el stream";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public WatchtimeCommand() {
+        super(
+                "Watchtime",
+                "!watchtime",
+                "Muestra el tiempo que llevas viendo el stream",
+                true,
+                false,
+                0,
+                0
+        );
     }
 
     @Override

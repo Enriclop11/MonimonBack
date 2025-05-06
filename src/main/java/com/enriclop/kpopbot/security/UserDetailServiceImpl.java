@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @Slf4j
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -30,11 +33,17 @@ public class UserDetailServiceImpl implements UserDetailsService {
                     .build();
         }
 
+        List<com.enriclop.kpopbot.modelo.User> moderatorUsers = settings.getModeratorUsers();
+        if (moderatorUsers == null || moderatorUsers.isEmpty()) {
+            moderatorUsers = new ArrayList<>();
+        }
+        List<String> moderatorUsernames = moderatorUsers.stream().map(com.enriclop.kpopbot.modelo.User::getUsername).toList();
+
         if (userService.getUserByUsername(username) != null) {
             com.enriclop.kpopbot.modelo.User user = userService.getUserByUsername(username);
             return User.withUsername(user.getUsername())
                     .password(user.getPassword())
-                    .roles("USER")
+                    .roles(moderatorUsernames.contains(username) ? "ADMIN" : "USER")
                     .build();
         }
 

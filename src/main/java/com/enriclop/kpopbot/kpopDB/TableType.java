@@ -20,7 +20,7 @@ public class TableType {
     };
 
     public static double modifierAgainst(Types attackType, Types defenseType) {
-        if (attackType == Types.NONE || defenseType == Types.NONE) {
+        if (attackType == Types.NONE || defenseType == Types.NONE || attackType == null || defenseType == null) {
             return 1;
         }
 

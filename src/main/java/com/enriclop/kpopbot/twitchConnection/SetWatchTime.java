@@ -43,6 +43,7 @@ public class SetWatchTime extends Thread {
                         log.info("User: " + user.getUsername());
                         WatchTime watchTime = user.getWatchTime();
                         watchTime.addMinutes(MINUTES);
+                        user = twitchConnection.userService.getUserById(user.getId());
                         user.setWatchTime(watchTime);
                         twitchConnection.userService.saveUser(user);
                         break;

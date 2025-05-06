@@ -7,40 +7,18 @@ import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.enriclop.kpopbot.twitchConnection.threads.Trade;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class TradeCommand implements Command {
-    @Override
-    public String getName() {
-        return "Trade";
-    }
+public class TradeCommand extends Command {
 
-    @Override
-    public String getCommand() {
-        return "!trade";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Intercambia una carta con otro usuario";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public TradeCommand() {
+        super(
+                "Trade",
+                "!trade",
+                "Intercambia una carta con otro usuario",
+                true,
+                false,
+                0,
+                0
+        );
     }
 
     @Override

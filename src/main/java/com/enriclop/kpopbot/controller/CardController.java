@@ -96,4 +96,6 @@ public class CardController {
         User user = userService.getUserByToken(token);
         return new PhotoCardDTO(kpopBoosterPack.openBoosterPack(user, id));
     }
+
+
 }

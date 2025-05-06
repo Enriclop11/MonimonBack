@@ -2,17 +2,28 @@ package com.enriclop.kpopbot.twitchConnection.rewards;
 
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.pubsub.events.RewardRedeemedEvent;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public interface Reward {
-    public String getName();
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Reward {
 
-    public String getReward();
+    private String name;
 
-    public boolean isActive();
+    private String reward;
 
-    public boolean isModOnly();
+    private boolean active;
 
-    public int getCooldown();
+    private boolean modOnly;
 
-    public void execute(TwitchConnection connection, RewardRedeemedEvent event);
+    private int cooldown;
+
+    public void execute(TwitchConnection connection, RewardRedeemedEvent event) {
+        connection.sendMessage("Reward not implemented");
+    }
 }

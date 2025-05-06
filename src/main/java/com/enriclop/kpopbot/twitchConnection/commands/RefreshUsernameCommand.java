@@ -4,40 +4,18 @@ import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class RefreshUsernameCommand implements Command {
-    @Override
-    public String getName() {
-        return "RefreshUsername";
-    }
+public class RefreshUsernameCommand extends Command {
 
-    @Override
-    public String getCommand() {
-        return "!refreshUsername";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Refresca el nombre de usuario en la base de datos";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public RefreshUsernameCommand() {
+        super(
+                "RefreshUsername",
+                "!refreshUsername",
+                "Refresca el nombre de usuario en la base de datos",
+                true,
+                false,
+                0,
+                0
+        );
     }
 
     @Override

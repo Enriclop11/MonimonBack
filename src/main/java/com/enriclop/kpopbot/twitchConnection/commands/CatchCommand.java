@@ -7,41 +7,18 @@ import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import static com.enriclop.kpopbot.enums.Pokeballs.*;
 import static com.enriclop.kpopbot.enums.Pokeballs.POKEBALL;
 
-public class CatchCommand implements Command {
+public class CatchCommand extends Command {
 
-    @Override
-    public String getName() {
-        return "Catch";
-    }
-
-    @Override
-    public String getCommand() {
-        return "!catch";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Atrapa una photocard";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return true;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public CatchCommand() {
+        super(
+                "Catch",
+                "!catch",
+                "Atrapa una photocard",
+                true,
+                true,
+                0,
+                0
+        );
     }
 
     @Override

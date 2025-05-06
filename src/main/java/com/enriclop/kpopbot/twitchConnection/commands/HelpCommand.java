@@ -3,41 +3,18 @@ package com.enriclop.kpopbot.twitchConnection.commands;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class HelpCommand implements Command{
+public class HelpCommand extends Command {
 
-    @Override
-    public String getName() {
-        return "Help";
-    }
-
-    @Override
-    public String getCommand() {
-        return "!help";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Enseña los comandos disponibles";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public HelpCommand() {
+        super(
+                "Help",
+                "!help",
+                "Enseña los comandos disponibles",
+                true,
+                false,
+                0,
+                0
+        );
     }
 
     @Override

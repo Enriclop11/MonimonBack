@@ -3,40 +3,18 @@ package com.enriclop.kpopbot.twitchConnection.commands;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class PhotosCommand implements Command {
-    @Override
-    public String getName() {
-        return "Photos";
-    }
+public class PhotosCommand extends Command {
 
-    @Override
-    public String getCommand() {
-        return "!photos";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Enseña las photocard que tienes";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public PhotosCommand() {
+        super(
+                "Photos",
+                "!photos",
+                "Enseña las photocard que tienes",
+                true,
+                false,
+                0,
+                0
+        );
     }
 
     @Override

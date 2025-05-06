@@ -1,5 +1,6 @@
 package com.enriclop.kpopbot.servicio;
 
+import com.enriclop.kpopbot.enums.Types;
 import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.repositorio.IPhotoCardRepository;
@@ -47,6 +48,25 @@ public class CardService {
         }
 
         card.setUser(user);
+        cardRepository.save(card);
+    }
+
+    public void createCustomCard(String name, String band, String fullName, String photo, Types type, Types type2, int attack, int defense, int hp, int popularity, User user) {
+        PhotoCard card = new PhotoCard();
+        card.setName(name);
+        card.setPhoto(photo);
+        card.setType(type);
+        card.setType2(type2);
+        card.setAttack(attack);
+        card.setDefense(defense);
+        card.setPopularity(popularity);
+        card.setBand(band);
+        card.setUser(user);
+        card.setHp(hp);
+        card.setFullName(fullName);
+
+        card.setIdolID(0);
+
         cardRepository.save(card);
     }
 }

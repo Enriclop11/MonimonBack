@@ -5,40 +5,18 @@ import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
-public class SelectCommand implements Command{
-    @Override
-    public String getName() {
-        return "Select Cards";
-    }
+public class SelectCommand extends Command {
 
-    @Override
-    public String getCommand() {
-        return "!select";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Selecciona una carta para tu equipo";
-    }
-
-    @Override
-    public boolean isActive() {
-        return true;
-    }
-
-    @Override
-    public boolean isModOnly() {
-        return false;
-    }
-
-    @Override
-    public int getPrice() {
-        return 0;
-    }
-
-    @Override
-    public int getCooldown() {
-        return 0;
+    public SelectCommand() {
+        super(
+                "Select",
+                "!select",
+                "Selecciona una carta para tu equipo",
+                true,
+                false,
+                0,
+                0
+        );
     }
 
     @Override

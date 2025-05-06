@@ -51,10 +51,10 @@ public class PhotoCardDTO {
         this.type = card.getType().getDisplayName();
         this.popularity = card.getPopularity();
 
-        if (type2 != null) {
+        if (card.getType2() != null) {
             this.type2 = card.getType2().getDisplayName();
         } else {
-            this.type2 = String.valueOf(Types.NONE);
+            this.type2 = Types.NONE.getDisplayName();
         }
     }
 

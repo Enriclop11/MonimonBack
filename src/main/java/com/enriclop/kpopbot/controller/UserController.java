@@ -2,6 +2,7 @@ package com.enriclop.kpopbot.controller;
 
 import com.enriclop.kpopbot.dto.*;
 import com.enriclop.kpopbot.modelo.User;
+import com.enriclop.kpopbot.security.Settings;
 import com.enriclop.kpopbot.servicio.UserService;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.enriclop.kpopbot.utilities.Utilities;
@@ -27,6 +28,9 @@ import java.util.List;
 @RestController
 @Slf4j
 public class UserController {
+
+    @Autowired
+    Settings settings;
 
     @Autowired
     private UserService userService;
@@ -75,7 +79,12 @@ public class UserController {
     @PostMapping("/myuser")
     public UserProfileDto getMyUser(@RequestHeader("Authorization") String token) {
         User user = userService.getUserByToken(token);
-        return UserProfileDto.fromUser(user);
+
+        boolean isModerator = settings.getModeratorUsers()
+                .stream()
+                .anyMatch(moderator -> moderator.getUsername().equals(user.getUsername()));
+
+        return UserProfileDto.fromUser(user, isModerator);
     }
 
     @PostMapping("/changePassword")
@@ -161,7 +170,6 @@ public class UserController {
         String token = userService.generateToken(authentication);
         return new LoginResponse(token);
     }
-
 
     static class TwitchLoginDTO {
         public String code;

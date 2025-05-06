@@ -182,9 +182,7 @@ public class KpopService {
 
         price = popularity + attack + defense + hp;
 
-        price /= 10;
-
-        return price;
+        return price/5;
     }
 
     public List<Idol> getIdolByApiName(String name) {
