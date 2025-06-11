@@ -55,7 +55,7 @@ public class Event {
         scheduler = Executors.newSingleThreadScheduledExecutor();
 
         scheduler.scheduleWithFixedDelay(() -> {
-            if (active) {
+            if (active && connection.isLive()) {
                 execute(connection);
             }
         }, getRandomCooldown(), getRandomCooldown(), TimeUnit.MINUTES);

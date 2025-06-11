@@ -11,6 +11,7 @@ import com.enriclop.kpopbot.servicio.UserService;
 import com.enriclop.kpopbot.twitchConnection.commands.*;
 import com.enriclop.kpopbot.twitchConnection.events.Event;
 import com.enriclop.kpopbot.twitchConnection.events.Spawn;
+import com.enriclop.kpopbot.twitchConnection.events.announcements.DiscordAnnouncement;
 import com.enriclop.kpopbot.twitchConnection.rewards.CatchReward;
 import com.enriclop.kpopbot.twitchConnection.rewards.GachaReward;
 import com.enriclop.kpopbot.twitchConnection.rewards.Reward;
@@ -116,6 +117,7 @@ public class TwitchConnection {
 
         events = new ArrayList<>();
         events.add(new Spawn());
+        events.add(new DiscordAnnouncement());
     }
 
 

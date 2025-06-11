@@ -10,6 +10,9 @@ import java.util.*;
 
 public class GachaReward extends Reward {
 
+    private List<Map<String, Integer>> currentWinStreaks = new ArrayList<>();
+    private List<Map<String, Integer>> currentLoseStreaks = new ArrayList<>();
+
     public GachaReward() {
         super(
                 "Suerte",
@@ -53,6 +56,8 @@ public class GachaReward extends Reward {
 
     @Override
     public void execute(TwitchConnection connection, RewardRedeemedEvent event) {
+        boolean winned = false;
+
         User user = connection.getUserService().getUserByTwitchId(event.getRedemption().getUser().getId());
 
         Random random = new Random();
@@ -89,15 +94,25 @@ public class GachaReward extends Reward {
             if (randomKeys[0].equals(randomKeys[1]) && randomKeys[1].equals(randomKeys[2])) {
 
                 customMessage = giveRandomCard(SLOT_RESULTS.get(randomKeys[0])[0], SLOT_RESULTS.get(randomKeys[0])[1], connection, user, randomKeys);
+                winned = true;
 
             } else if (randomKeys[0].equals(randomKeys[1]) || randomKeys[1].equals(randomKeys[2]) || randomKeys[0].equals(randomKeys[2])) {
 
                 String repeatedKey = randomKeys[0].equals(randomKeys[1]) ? randomKeys[0] : randomKeys[2];
                 customMessage = giveScore(SLOT_RESULTS.get(repeatedKey)[0], SLOT_RESULTS.get(repeatedKey)[1], connection, user);
+                winned = true;
+
             }
+        } else {
+            winned = true;
         }
 
         customMessage = customMessage == null ? "" : customMessage;
+
+        String streakMessage = checkStreaks(connection, user, winned);
+        if (!streakMessage.isEmpty()) {
+            customMessage += streakMessage;
+        }
 
         connection.sendMessage(message + customMessage);
 
@@ -123,7 +138,7 @@ public class GachaReward extends Reward {
 
         user.addScore(randomNumber);
         connection.getUserService().saveUser(user);
-        return "Has ganado " + randomNumber + " puntos.\n";
+        return "Has ganado " + randomNumber + " puntos. Ahora tienes " + user.getScore() + " puntos.\n";
     }
 
     private String customReward(TwitchConnection conn, User user,  String[] randomKeys) {
@@ -145,5 +160,49 @@ public class GachaReward extends Reward {
         }
 
         return null;
+    }
+
+    private String checkStreaks(TwitchConnection connection, User user, boolean winned) {
+        int streak = 1;
+        String type = "";
+
+        if (winned) {
+            Map<String, Integer> winStreak = currentWinStreaks.stream()
+                    .filter(streakMap -> streakMap.containsKey(user.getTwitchId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (winStreak != null) {
+                streak = winStreak.get(user.getTwitchId()) + 1;
+                winStreak.put(user.getTwitchId(), streak);
+            } else {
+                Map<String, Integer> newWinStreak = new HashMap<>();
+                newWinStreak.put(user.getTwitchId(), 1);
+                currentWinStreaks.add(newWinStreak);
+            }
+            currentLoseStreaks.removeIf(streakMap -> streakMap.containsKey(user.getTwitchId()));
+            type = "racha de victorias";
+        } else {
+            Map<String, Integer> loseStreak = currentLoseStreaks.stream()
+                    .filter(streakMap -> streakMap.containsKey(user.getTwitchId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (loseStreak != null) {
+                streak = loseStreak.get(user.getTwitchId()) + 1;
+                loseStreak.put(user.getTwitchId(), streak);
+            } else {
+                Map<String, Integer> newLoseStreak = new HashMap<>();
+                newLoseStreak.put(user.getTwitchId(), 1);
+                currentLoseStreaks.add(newLoseStreak);
+            }
+            currentWinStreaks.removeIf(streakMap -> streakMap.containsKey(user.getTwitchId()));
+            type = "racha de derrotas";
+        }
+
+        if (streak > 1) {
+            return " Lleva una " + type + " de " + streak + "!";
+        }
+        return "";
     }
 }

@@ -1,6 +1,7 @@
 package com.enriclop.kpopbot.controller;
 
 import com.enriclop.kpopbot.dto.*;
+import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.security.Settings;
 import com.enriclop.kpopbot.servicio.UserService;
@@ -54,11 +55,20 @@ public class UserController {
             if (user == null) {
                 user = userService.getUserByUsername(id);
             }
+            reOrderUserCards(user);
             return new UserCardsDTO(user);
         } catch (NumberFormatException e) {
             User user = userService.getUserByUsername(id);
+            reOrderUserCards(user);
             return new UserCardsDTO(user);
         }
+    }
+
+    public void reOrderUserCards(User user) {
+        List<PhotoCard> cards = user.getPhotoCards();
+        cards.sort((c1, c2) -> c1.getId().compareTo(c2.getId()));
+        user.setPhotoCards(cards);
+        userService.saveUser(user);
     }
 
     @PostMapping("/token")

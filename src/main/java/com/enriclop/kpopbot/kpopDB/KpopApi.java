@@ -3,6 +3,7 @@ package com.enriclop.kpopbot.kpopDB;
 import com.enriclop.kpopbot.enums.Types;
 import com.enriclop.kpopbot.modelo.Idol;
 import com.enriclop.kpopbot.modelo.PhotoCard;
+import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.security.Settings;
 import com.enriclop.kpopbot.servicio.CardService;
 import com.enriclop.kpopbot.servicio.UserService;
@@ -192,7 +193,7 @@ public class KpopApi {
         return idol;
     }
 
-    @Scheduled(cron = "0 0 0 */2 * *")
+    //@Scheduled(fixedDelay = 2 * 24 * 60 * 60 * 1000)
     public void updateIdols() throws IOException {
         List<Idol> idols = getAllFemaleIdols();
 
@@ -268,7 +269,7 @@ public class KpopApi {
         return 0;
     }
 
-    @Scheduled(fixedRate = 144000000)
+    @Scheduled(fixedDelay = 5 * 60 * 60 * 1000) // 5 hours in ms
     public void removeBannedIdols() {
         List<Idol> idols = kpopService.getIdols();
         idols.forEach(idol -> {
@@ -285,13 +286,17 @@ public class KpopApi {
 
                 log.info("Renaming idol: " + idol.getName());
             }
+
+            if (idol.getName().trim().isEmpty() || idol.getName().equals(" ") || idol.getName().equals("\\n")) {
+                log.info("Removing idol: " + idol.getApiName());
+                kpopService.deleteIdolById(idol.getId());
+            }
         });
 
         List<PhotoCard> cards = cardService.getCards();
         cards.forEach(photoCard -> {
             if (EXCLUDED_GROUPS.contains(photoCard.getBand().toUpperCase())) {
                 log.info("Removing card: " + photoCard.getName() + " from user: " + photoCard.getUser().getUsername());
-
                 cardService.deleteCardById(photoCard.getId());
             }
 
@@ -302,6 +307,14 @@ public class KpopApi {
                 cardService.saveCard(photoCard);
 
                 log.info("Renaming card: " + photoCard.getName() + " from user: " + photoCard.getUser().getUsername());
+            }
+
+            if (photoCard.getName().trim().isEmpty() || photoCard.getName().equals(" ") || photoCard.getName().equals("\\n")) {
+                User user = userService.getUserById(photoCard.getUser().getId());
+                user.getPhotoCards().remove(photoCard);
+                userService.saveUser(user);
+                log.info("Removing card: " + photoCard.getApiName() + " from user: " + photoCard.getUser().getUsername());
+                cardService.deleteCardById(photoCard.getId());
             }
         });
     }
