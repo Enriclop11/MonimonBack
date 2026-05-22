@@ -27,10 +27,12 @@ public class Settings {
     private String clientId;
     private String spotifyClientId;
     private String spotifyClientSecret;
+    private String tokenDiscord;
+    private String discordClientId;
+    private String discordClientSecret;
 
     private List<String> moderators;
     private List<User> moderatorUsers;
-
     @PostConstruct
     public void initAdminUser() {
         this.adminUser = new AdminUser(adminUsername, adminPassword);

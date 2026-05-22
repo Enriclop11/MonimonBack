@@ -1,6 +1,6 @@
 package com.enriclop.kpopbot.twitchConnection.rewards;
 
-import com.enriclop.kpopbot.enums.Types;
+import com.enriclop.kpopbot.dto.CustomPhotoDTO;
 import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
@@ -13,23 +13,24 @@ public class GachaReward extends Reward {
     private List<Map<String, Integer>> currentWinStreaks = new ArrayList<>();
     private List<Map<String, Integer>> currentLoseStreaks = new ArrayList<>();
 
+
+
     public GachaReward() {
         super(
                 "Suerte",
                 "suerte de cojones",
+                10,
                 true,
                 false,
                 2
         );
+
     }
 
     public static final String PABLOMOTOS = "pablomotos";
 
-    public static final List<String> PABLOMOTOS_PHOTOS = List.of(
-            "https://pbs.twimg.com/media/FSK9jQ2XsAEst7g?format=jpg&name=small",
-            "https://img.imgur.com/F65aj4N.jpg",
-            "https://theriagames.com/wp-content/uploads/2025/02/Goblin_2.webp"
-    );
+    public static final String[] PABLO_MOTOS_IDS = {"pablomotos1", "pablomotos2", "pablomotos3", "pablomotos4", "pablomotos5"};
+
 
     public static Map<String, int[]> SLOT_RESULTS = new HashMap<>() {{
         put("NoBitches", new int[]{10, 20});
@@ -52,6 +53,7 @@ public class GachaReward extends Reward {
         put("chaewonPls", new int[]{70, 100});
         put("gg", new int[]{60, 80});
         put("gGs", new int[]{60, 80});
+        put("chaewonFeet ", new int[]{90, 100});
     }};
 
     @Override
@@ -143,17 +145,13 @@ public class GachaReward extends Reward {
 
     private String customReward(TwitchConnection conn, User user,  String[] randomKeys) {
         if (randomKeys[0].equals(PABLOMOTOS) && randomKeys[1].equals(PABLOMOTOS) && randomKeys[2].equals(PABLOMOTOS)) {
-            PhotoCard customCard = new PhotoCard();
-            customCard.setName("Pablo Motos");
-            customCard.setBand("Club Pétalos");
-            customCard.setHp(10);
-            customCard.setDefense(10);
-            customCard.setAttack(10);
-            customCard.setType(Types.VISUAL);
-            customCard.setType(Types.NONE);
+
+            String randomId = PABLO_MOTOS_IDS[new Random().nextInt(PABLO_MOTOS_IDS.length)];
+
+            CustomPhotoDTO pabloCard = conn.kpopService.getCustomCard(randomId);
+
+            PhotoCard customCard = new PhotoCard(pabloCard);
             customCard.setUser(user);
-            customCard.setIdolID(0);
-            customCard.setPhoto(PABLOMOTOS_PHOTOS.get(new Random().nextInt(PABLOMOTOS_PHOTOS.size())));
             conn.getCardService().saveCard(customCard);
 
             return "Que pase la china! " + user.getUsernameDisplay() + " ha sacado una carta de Pablo Motos!\n";
@@ -200,7 +198,7 @@ public class GachaReward extends Reward {
             type = "racha de derrotas";
         }
 
-        if (streak > 1) {
+        if (streak >= 5) {
             return " Lleva una " + type + " de " + streak + "!";
         }
         return "";

@@ -39,6 +39,8 @@ public class TradeCommand extends Command {
             username = username.substring(1);
         }
 
+        username = username.toLowerCase();
+
         User receiver = userService.getUserByUsername(username);
 
         if (receiver == null) {

@@ -2,6 +2,7 @@ package com.enriclop.kpopbot.twitchConnection;
 
 import com.enriclop.kpopbot.enums.Pokeballs;
 import com.enriclop.kpopbot.kpopDB.KpopPhotos;
+import com.enriclop.kpopbot.kpopDB.KpopService;
 import com.enriclop.kpopbot.modelo.PhotoCard;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.security.Settings;
@@ -15,6 +16,7 @@ import com.enriclop.kpopbot.twitchConnection.events.announcements.DiscordAnnounc
 import com.enriclop.kpopbot.twitchConnection.rewards.CatchReward;
 import com.enriclop.kpopbot.twitchConnection.rewards.GachaReward;
 import com.enriclop.kpopbot.twitchConnection.rewards.Reward;
+import com.enriclop.kpopbot.twitchConnection.rewards.SuperCatchReward;
 import com.enriclop.kpopbot.twitchConnection.settings.Prices;
 import com.enriclop.kpopbot.twitchConnection.threads.Combat;
 import com.enriclop.kpopbot.twitchConnection.threads.Trade;
@@ -68,6 +70,7 @@ public class TwitchConnection {
     @Autowired
     CardInfoService cardInfoClient;
 
+
     PhotoCard wildCard;
 
     TwitchClient twitchClient;
@@ -95,6 +98,9 @@ public class TwitchConnection {
     @Autowired
     private KpopPhotos kpopPhotos;
 
+    @Autowired
+    public KpopService kpopService;
+
     public TwitchConnection() {
         commands = new ArrayList<>();
         commands.add(new LeaderboardCommand());
@@ -110,10 +116,12 @@ public class TwitchConnection {
         commands.add(new TradeCommand());
         commands.add(new GiftCommand());
         commands.add(new GachaCommand());
+        commands.add(new CustomCardCommand());
 
         rewards = new ArrayList<>();
         rewards.add(new CatchReward());
         rewards.add(new GachaReward());
+        rewards.add(new SuperCatchReward());
 
         events = new ArrayList<>();
         events.add(new Spawn());
@@ -182,7 +190,17 @@ public class TwitchConnection {
             if (commandCalled.getPrice() > 0 && !checkPoints(commandCalled, event.getUser().getId())) return;
             if (commandCalled.getCooldown() > 0 && checkCooldown(commandCalled.getCommand(), event.getUser().getId())) return;
 
-            commandCalled.execute(this, event);
+            try {
+                commandCalled.execute(this, event);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                if (commandCalled.getPrice() > 0) {
+                    User user = userService.getUserByTwitchId(event.getUser().getId());
+                    user.addScore(commandCalled.getPrice());
+                    userService.saveUser(user);
+                }
+                sendMessage(commandCalled.getCommand() + " failed");
+            }
         });
 
         eventManager.onEvent(RewardRedeemedEvent.class, event -> {
@@ -191,7 +209,7 @@ public class TwitchConnection {
             String reward = event.getRedemption().getReward().getTitle();
 
             String finalReward = reward.toLowerCase();
-            Reward rewardCalled = rewards.stream().filter(r -> r.getReward().equals(finalReward)).findFirst().orElse(null);
+            Reward rewardCalled = rewards.stream().filter(r -> r.getReward().toLowerCase().equals(finalReward)).findFirst().orElse(null);
 
             if (rewardCalled == null) return;
             if (!rewardCalled.isActive()) return;
@@ -241,6 +259,7 @@ public class TwitchConnection {
         return mods.stream().anyMatch(mod -> (mod.getTwitchId() + "").equals(userId));
     }
 
+
     @Scheduled(fixedRate = 36000000)
     public void getAllMods() {
         List<User> mods = new ArrayList<>();
@@ -261,7 +280,7 @@ public class TwitchConnection {
         if (cooldowns.containsKey(command)) {
             List<String> users = cooldowns.get(command);
             if (users.contains(id)) {
-                sendMessage("Espera un momento antes de volver a usar este comando!");
+                //sendMessage("Espera un momento antes de volver a usar este comando!");
                 return true;
             } else {
                 cooldowns.put(command, users);
@@ -324,29 +343,20 @@ public class TwitchConnection {
         return users;
     }
 
-
-    /*
-    public void setSpawn(Boolean active, int cdMinutes, int maxCdMinutes) {
-        if (spawn != null) {
-            spawn.active = false;
-            log.info("Spawn thread deactivated");
-        }
-        if (active) {
-            spawn = new Spawn(this, cdMinutes, maxCdMinutes);
-            spawn.start();
-            log.info("Spawn thread started with cdMinutes: {} and maxCdMinutes: {}", cdMinutes, maxCdMinutes);
-        } else {
-            log.info("Stopping spawn");
-        }
-    }
-
-     */
-
     public void start (String twitchId) {
-        if (userService.getUserByTwitchId(twitchId) == null) {
-            com.github.twitch4j.helix.domain.User user = getUserDetails(Integer.parseInt(twitchId));
-            User newUser = new User(user.getId(), user.getDisplayName().toLowerCase(), user.getProfileImageUrl());
+        User user = userService.getUserByTwitchId(twitchId);
+        com.github.twitch4j.helix.domain.User twitchUser = getUserDetails(Integer.parseInt(twitchId));
+
+        if (user == null) {
+            User newUser = new User(twitchUser.getId(), twitchUser.getDisplayName().toLowerCase(), twitchUser.getProfileImageUrl());
             userService.saveUser(newUser);
+            return;
+        }
+
+        if (!user.getUsername().equals(twitchUser.getDisplayName().toLowerCase()) || !user.getAvatar().equals(twitchUser.getProfileImageUrl())) {
+            user.setUsername(twitchUser.getDisplayName().toLowerCase());
+            user.setAvatar(twitchUser.getProfileImageUrl());
+            userService.saveUser(user);
         }
     }
 
@@ -403,12 +413,12 @@ public class TwitchConnection {
         return null;
     }
 
-    public void catchPokemon(String idTwitch, Pokeballs pokeball) {
+    public boolean catchPokemon(String idTwitch, Pokeballs pokeball) {
         start(idTwitch);
 
         if (wildCard == null) {
             sendMessage("No hay ninguna photocard!");
-            return;
+            return false;
         }
 
         int random = (int) (Math.random() * pokeball.catchRate) + 1;
@@ -434,6 +444,7 @@ public class TwitchConnection {
             //sendMessage("La foto de " + Utilities.firstLetterToUpperCase(wildPokemon.getName()) + " se le ha escapado de las manos a " + user.getUsername() + "!");
         }
 
+        return true;
     }
 
     public boolean isLive() {
@@ -451,7 +462,6 @@ public class TwitchConnection {
     }
 
     public void returnRedemption(ChannelPointsRedemption redemption) {
-
               twitchClient.getHelix().updateRedemptionStatus(
                 settings.getTokenChannel(),
                 channel.getId(),

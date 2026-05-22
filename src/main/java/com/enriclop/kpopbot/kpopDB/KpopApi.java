@@ -193,7 +193,7 @@ public class KpopApi {
         return idol;
     }
 
-    //@Scheduled(fixedDelay = 2 * 24 * 60 * 60 * 1000)
+    //@Scheduled(fixedDelay = 24 * 60 * 60 * 1000) // 24 hours in ms
     public void updateIdols() throws IOException {
         List<Idol> idols = getAllFemaleIdols();
 

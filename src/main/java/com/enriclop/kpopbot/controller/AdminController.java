@@ -1,5 +1,7 @@
 package com.enriclop.kpopbot.controller;
 
+import com.enriclop.kpopbot.discordConnection.DiscordConnection;
+import com.enriclop.kpopbot.discordConnection.commands.DiscordCommand;
 import com.enriclop.kpopbot.enums.Types;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.servicio.CardService;
@@ -30,6 +32,9 @@ public class AdminController {
 
     @Autowired
     TwitchConnection twitchConnection;
+
+    @Autowired
+    DiscordConnection discordConnection;
 
     private class UserPoints {
         String username;
@@ -144,6 +149,7 @@ public class AdminController {
         boolean active;
         boolean modOnly;
         int cooldown;
+        int price;
     }
 
     @PostMapping("/reward/edit")
@@ -166,8 +172,11 @@ public class AdminController {
             reward.setActive(rewardSettings.active);
             reward.setModOnly(rewardSettings.modOnly);
             reward.setCooldown(rewardSettings.cooldown);
+            reward.setPrice(rewardSettings.price);
             rewards.add(reward);
             twitchConnection.setRewards(rewards);
+
+            reward.editReward(rewardSettings.active, twitchConnection);
         } else {
             log.error("Reward not found: " + rewardSettings.reward);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -220,6 +229,54 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(twitchConnection.getEvents(), HttpStatus.OK);
+    }
+
+    @GetMapping("/discordCommands")
+    public ResponseEntity<List<DiscordCommand>> getDiscordCommands() {
+        return new ResponseEntity<>(discordConnection.getCommands(), HttpStatus.OK);
+    }
+
+    @AllArgsConstructor
+    private static class DiscordCommandSettings {
+        String name;
+        String command;
+        String description;
+        boolean active;
+        boolean modOnly;
+        int price;
+        int cooldown;
+    }
+
+    @PostMapping("/discordCommand/edit")
+    public ResponseEntity<List<DiscordCommand>> setDiscordCommand(@RequestBody DiscordCommandSettings commandSettings) {
+        List<DiscordCommand> commands = discordConnection.getCommands();
+
+        DiscordCommand command = null;
+
+        for (DiscordCommand cmd : commands) {
+            log.info("Command: " + cmd.getName() + " - " + commandSettings.name);
+            if (cmd.getName().equalsIgnoreCase(commandSettings.name)) {
+                command = cmd;
+                commands.remove(cmd);
+                break;
+            }
+        }
+
+        if (command != null) {
+            command.setCommand(commandSettings.command);
+            command.setDescription(commandSettings.description);
+            command.setModOnly(commandSettings.modOnly);
+            command.setPrice(commandSettings.price);
+            command.setCooldown(commandSettings.cooldown);
+            command.setActive(commandSettings.active, discordConnection);
+            commands.add(command);
+            discordConnection.setCommands(commands);
+        } else {
+            log.error("Command not found: " + commandSettings.command);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(discordConnection.getCommands(), HttpStatus.OK);
     }
 
 }

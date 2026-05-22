@@ -1,32 +1,31 @@
 package com.enriclop.kpopbot.discordConnection;
 
-import com.enriclop.kpopbot.modelo.PhotoCard;
+import com.enriclop.kpopbot.discordConnection.commands.*;
+import com.enriclop.kpopbot.kpopDB.KpopPhotos;
 import com.enriclop.kpopbot.modelo.User;
 import com.enriclop.kpopbot.security.Settings;
+import com.enriclop.kpopbot.servicio.CardService;
 import com.enriclop.kpopbot.servicio.UserService;
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
-import discord4j.core.event.domain.interaction.ButtonInteractionEvent;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.component.ActionRow;
-import discord4j.core.object.component.Button;
-import discord4j.core.object.entity.Message;
-import discord4j.core.object.entity.channel.MessageChannel;
-import discord4j.core.spec.EmbedCreateSpec;
-import discord4j.core.spec.MessageCreateSpec;
+import discord4j.discordjson.json.ApplicationCommandData;
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeoutException;
+import java.util.Map;
 
+@Slf4j
 @Component
+@Getter
+@Setter
 public class DiscordConnection {
 
     @Autowired
@@ -35,168 +34,159 @@ public class DiscordConnection {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private KpopPhotos kpopPhotos;
+
+    @Autowired
+    CardService cardService;
+
     DiscordClient client;
 
     GatewayDiscordClient gateway;
 
+    List<DiscordCommand> commands = new ArrayList<>();
+
     public DiscordConnection() {
-        //connect();
+        commands.add(new HelpDiscordCommand());
+        commands.add(new PhotosDiscordCommand());
+        commands.add(new GachaDiscordCommand());
+        commands.add(new ComebacksDiscordCommand());
     }
 
     public void restart() {
         if (this.gateway != null) {
             this.gateway.logout().block();
         }
-        //connect();
+        connect();
     }
 
+    @PostConstruct
     public void connect() {
-        //client = DiscordClient.create(settings.tokenDiscord);
+        assert settings != null;
+        client = DiscordClient.create(settings.getTokenDiscord());
 
         gateway = client.login().block();
 
+        if (gateway == null) {
+            log.error("Error al conectar con Discord");
+            return;
+        }
+
+        registerDiscordCommands();
+
         gateway.on(ReadyEvent.class).subscribe(event -> {
-            System.out.println("Logged in as " + event.getSelf().getUsername());
+            log.info("Logged in as " + event.getSelf().getUsername());
         });
 
-        gateway.on(MessageCreateEvent.class).subscribe(event -> {
-            Message message = event.getMessage();
+        //gateway.on(ApplicationCommandInteractionEvent.class)
+        gateway.on(MessageCreateEvent.class)
+                .doOnError(e -> log.error("Error in event stream", e))
+                .retry()
+                .subscribe(event -> {
+                    //event.deferReply().block();
+                    // log.info("Mensaje recibido: " + event.getCommandName());
+                    // String command = event.getCommandName();
+                    // if (event.getMessage().getAuthor().isEmpty()) return;
+                    if (event.getMessage().getAuthor().get().isBot()) return;
+                    String content = event.getMessage().getContent();
+                    if (!content.startsWith("!")) return;
+                    String command = content.split(" ")[0].substring(1);
 
-            String command = message.getContent().split(" ")[0];
+                    String finalCommand = command.toLowerCase();
 
-            if (!command.startsWith("!")) return;
+                    log.info("Comando recibido: " + finalCommand);
 
-            command = command.substring(1);
-            command = command.toLowerCase();
+                    DiscordCommand commandCalled = commands.stream().filter(c -> c.getCommand().equals(finalCommand)).findFirst().orElse(null);
 
-            switch (command) {
-                case "ping":
-                    MessageChannel channel = message.getChannel().block();
-                    channel.createMessage("Pong!").block();
-                    System.out.println(message.getAuthor().get().getUsername());
-                    break;
-                case "help":
-                    MessageChannel channel2 = message.getChannel().block();
-                    channel2.createMessage("Comandos disponibles: !photos").block();
-                    break;
-                case "photos":
-                    lookPC(event);
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
+                    if (commandCalled == null) return;
+                    if (!commandCalled.isActive()) return;
+                    // if (commandCalled.isModOnly() && !checkMod(event.getUser().getId())) return;
+                    // if (commandCalled.getPrice() > 0 && !checkPoints(commandCalled, event.getUser().getId().asString(), event)) return;
+                    if (commandCalled.getPrice() > 0 && !checkPoints(commandCalled, event.getMessage().getAuthor().get().getId().asString(), event)) return;
+                    // if (commandCalled.getCooldown() > 0 && checkCooldown(commandCalled.getCommand(), event.getUser().getId())) return;
 
-    public void lookPC(MessageCreateEvent event) {
-        System.out.println("Looking PC");
-
-        MessageChannel channel = event.getMessage().getChannel().block();
-
-        User user = null;
-
-        try{
-            user = userService.getUserByDiscordUsername(event.getMessage().getAuthor().get().getUsername());
-
-            if (user == null) {
-                channel.createMessage("No tienes cuenta vinculada").block();
-                return;
-            }
-        } catch (Exception e) {
-            channel.createMessage("No tienes cuenta vinculada").block();
-            return;
-        }
-
-        if (user.getPhotoCards().isEmpty()) {
-            channel.createMessage("El usuario " + user.getUsernameDisplay() + " no tiene photo cards").block();
-            return;
-        }
-
-        EmbedCreateSpec embedPokemon = getEmbedPhotoCard(user, 0);
-
-        List<Button> buttons = new ArrayList<>();
-        buttons.add(Button.secondary("select_" + user.getId() + "_1", "Seleccionar"));
-        if (user.getPhotoCards().size() > 1) {
-            buttons.add(Button.primary("page_" + user.getId() + "_2", "▶"));
-        }
-
-
-        Mono<Message> createMessageMono = channel.createMessage(MessageCreateSpec.builder()
-                .addEmbed(embedPokemon)
-                .addComponent(ActionRow.of(buttons))
-                .build());
-
-        Mono<Void> tempListener = gateway.on(ButtonInteractionEvent.class, eventButton -> {
-            if (eventButton.getCustomId().startsWith("page")) {
-                String[] data = eventButton.getCustomId().split("_");
-                int userId = Integer.parseInt(data[1]);
-                int page = Integer.parseInt(data[2]);
-
-                User user1 = userService.getUserById(userId);
-
-                EmbedCreateSpec embedPokemon1 = getEmbedPhotoCard(user1, page - 1);
-
-                List<Button> buttons1 = new ArrayList<>();
-                if (page > 1) {
-                    buttons1.add(Button.primary("page_" + user1.getId() + "_" + (page - 1), "◀"));
-                }
-                buttons1.add(Button.secondary("select_" + user1.getId() + "_" + (page), "Seleccionar"));
-                if (user1.getPhotoCards().size() > page) {
-                    buttons1.add(Button.primary("page_" + user1.getId() + "_" + (page + 1), "▶"));
-                }
-
-
-                return eventButton.edit().withEmbeds(embedPokemon1)
-                        .withComponents(ActionRow.of(buttons1));
-            } else {
-                if (eventButton.getCustomId().startsWith("select")) {
-                    String[] data = eventButton.getCustomId().split("_");
-                    int userId = Integer.parseInt(data[1]);
-                    int selectedIndex = Integer.parseInt(data[2]) - 1;
-
-                    System.out.println("Seleccionando photo card " + selectedIndex + " de " + userId);
-
-                    User user1 = userService.getUserById(userId);
-
-                    if (!Objects.equals(user1.getDcUsername(), eventButton.getInteraction().getUser().getUsername())) {
-                        return eventButton.reply().withContent(eventButton.getInteraction().getUser().getUsername() + " no puedes seleccionar la photo card de otro usuario");
+                    try {
+                        commandCalled.execute(this, event);
+                    } catch (Exception e) {
+                        log.error("Error al ejecutar el comando", e);
+                        //event.editReply("Ha ocurrido un error al procesar el comando.").block();
+                        event.getMessage().getChannel().block().createMessage("Ha ocurrido un error al procesar el comando.").block();
                     }
-
-                    PhotoCard photoCard = user1.getPhotoCards().get(selectedIndex);
-                    //user1.setPhotoCardSelected(photoCard.getId());
-                    userService.saveUser(user1);
-
-                    return eventButton.reply().withContent("Photo Card " + photoCard.getDisplayName() + " seleccionado").withEphemeral(true);
-                }
-
-                return Mono.empty();
-            }
-        }).timeout(Duration.ofMinutes(30))
-                .onErrorResume(TimeoutException.class, ignore -> Mono.empty())
-                .then();
-
-        createMessageMono.then(tempListener).subscribe();
+                });
     }
 
-    public EmbedCreateSpec getEmbedPhotoCard(User user, int pokemonIndex) {
-        PhotoCard photoCard = user.getPhotoCards().get(pokemonIndex);
+    private boolean checkPoints(DiscordCommand commandCalled, String id, MessageCreateEvent event) {
+        User user = userService.getUserByDiscordUsername(id);
 
-        return EmbedCreateSpec.builder()
-                .title(photoCard.getDisplayName())
-                .url("https://kpopping.com/profiles/idol/" + photoCard.getApiName().toLowerCase())
-                .author(user.getUsernameDisplay(), null, user.getAvatar())
-                .description("Photo Card de " + user.getUsernameDisplay())
-                .thumbnail(user.getAvatar())
-                .addField("Tipo", photoCard.getType().getDisplayName(), true)
-                .addField("Tipo 2", photoCard.getType2().getDisplayName(), true)
-                .addField("Grupo", photoCard.getBand(), true)
-                .addField("HP", String.valueOf(photoCard.getHp()), true)
-                .addField("ATK", String.valueOf(photoCard.getAttack()), true)
-                .addField("DEF", String.valueOf(photoCard.getDefense()), true)
-                .image(photoCard.getPhoto())
-                .timestamp(Instant.now())
-                .footer("Photo Card " + (user.getPhotoCards().indexOf(photoCard) + 1) + " / " + user.getPhotoCards().size(), null)
-                .build();
+        if (user == null) {
+            //event.reply("No tienes cuenta vinculada").block();
+            event.getMessage().getChannel().block().createMessage("No tienes cuenta vinculada").block();
+            return false;
+        }
+
+        if (user.getScore() < commandCalled.getPrice()) {
+            //event.reply("No tienes suficientes puntos para usar este comando").block();
+            event.getMessage().getChannel().block().createMessage("No tienes suficientes puntos para usar este comando").block();
+            return false;
+        }
+
+        if (commandCalled.getPrice() > 0) {
+            user.setScore(user.getScore() - commandCalled.getPrice());
+            userService.saveUser(user);
+        }
+
+        return true;
+    }
+    public void registerDiscordCommands() {
+
+        Map<String, ApplicationCommandData> discordCommands = client
+                .getApplicationService()
+                .getGlobalApplicationCommands(client.getApplicationId().block())
+                .collectMap(ApplicationCommandData::name)
+                .block();
+
+
+        for (String commandName : discordCommands.keySet()) {
+            client.getApplicationService()
+                    .deleteGlobalApplicationCommand(client.getApplicationId().block(), discordCommands.get(commandName).id().asLong())
+                    .subscribe();
+            log.info("Comando eliminado: " + commandName);
+        }
+
+
+        /*
+        for (DiscordCommand command : commands) {
+            log.info("Comando registrado: " + command.getCommand() + " - " + command.getDescription());
+
+            client.getApplicationService()
+                    .createGlobalApplicationCommand(client.getApplicationId().block(), command.toRequest())
+                    .subscribe();
+        }
+
+         */
+    }
+
+    public void registerCommand(DiscordCommand command) {
+        log.info("Comando registrado: " + command.getCommand() + " - " + command.getDescription());
+
+        client.getApplicationService()
+                .createGlobalApplicationCommand(client.getApplicationId().block(), command.toRequest())
+                .subscribe();
+    }
+
+    public void deleteCommand(DiscordCommand command) {
+        Map<String, ApplicationCommandData> discordCommands = client
+                .getApplicationService()
+                .getGlobalApplicationCommands(client.getApplicationId().block())
+                .collectMap(ApplicationCommandData::name)
+                .block();
+
+        if (discordCommands.containsKey(command.getCommand())) {
+            client.getApplicationService()
+                    .deleteGlobalApplicationCommand(client.getApplicationId().block(), discordCommands.get(command.getCommand()).id().asLong())
+                    .subscribe();
+            log.info("Comando eliminado: " + command.getCommand());
+        }
     }
 
 }

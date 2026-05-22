@@ -37,6 +37,7 @@ public class User {
     private String password;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OrderBy("id DESC")
     private List<PhotoCard> photoCards = new ArrayList<>();
 
 
@@ -90,6 +91,18 @@ public class User {
             this.selectedCards = cardIds;
         } else {
             throw new IllegalArgumentException("You can only select up to 3 cards.");
+        }
+    }
+
+    public void selectCard(Integer cardId) {
+        if (this.selectedCards.contains(cardId)) {
+            return;
+        }
+        if (this.selectedCards.size() < 3) {
+            this.selectedCards.add(cardId);
+        } else {
+            this.selectedCards.remove(0);
+            this.selectedCards.add(cardId);
         }
     }
 

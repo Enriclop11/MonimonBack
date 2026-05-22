@@ -24,7 +24,7 @@ public class HelpCommand extends Command {
 
         if (message.length > 1) {
             for (Command command : connection.getCommands()) {
-                if (command.getCommand().equals("!" + message[1])) {
+                if (command.getCommand().equals("!" + message[1]) || command.getCommand().equals(message[1])) {
                     connection.sendMessage(command.getDescription() + " (Precio: " + command.getPrice() + ")");
                     return;
                 }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -27,15 +29,14 @@ public class KpopService {
     @Autowired
     private IBadgesRepository badgesRepository;
 
+    private List<CustomPhotoDTO> customCards;
+
     @PostConstruct
     public void init() {
         try {
-            if (System.getProperty("spring.profiles.active").equals("prod")) {
-                //loadIdols();
-                //loadBadges();
-            }
+            loadCustomCards();
         } catch (NullPointerException e) {
-            log.info("Not in prod mode");
+            log.error(e.getMessage());
         }
     }
 
@@ -117,14 +118,50 @@ public class KpopService {
         }
     }
 
+    public void loadCustomCards() {
+        log.info("Loading custom cards");
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        mapper.findAndRegisterModules();
+
+        String yamlUrl = "https://raw.githubusercontent.com/Enriclop11/PhotoRepository/main/sus/customCards.yaml";
+
+        try (InputStream inputStream = new URL(yamlUrl).openStream()) {
+
+            if (inputStream == null) {
+                throw new IOException("Failed to load remote YAML: " + yamlUrl);
+            }
+
+            CustomCardsWrapper wrapper = mapper.readValue(inputStream, CustomCardsWrapper.class);
+            customCards = wrapper.getCustomCards();
+
+            log.info("Custom Cards loaded");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            customCards = Collections.emptyList();
+
+            log.error(e.getMessage());
+        }
+    }
+
+    public CustomPhotoDTO getCustomCard(String id) {
+        return customCards.stream()
+                .filter(card -> card.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+
     public Idol getRandomIdol() {
-        List<Idol> idols = getIdols();
-        return idols.get((int) (Math.random() * idols.size()));
+        return idolRepository.getRandomIdol();
     }
 
     public Idol getRandomIdolByRange(int min, int max) {
-        List<Idol> idols = getActiveIdolsByRange(min, max);
-        return idols.get((int) (Math.random() * idols.size()));
+        return idolRepository.getRandomIdolByRange(min, max);
+    }
+
+    public Idol getRandomActiveIdol() {
+        return idolRepository.getRandomActiveIdol();
     }
 
     public String getRandomPhoto(Integer id) {

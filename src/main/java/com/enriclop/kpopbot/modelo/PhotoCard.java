@@ -1,5 +1,6 @@
 package com.enriclop.kpopbot.modelo;
 
+import com.enriclop.kpopbot.dto.CustomPhotoDTO;
 import com.enriclop.kpopbot.enums.Types;
 import com.enriclop.kpopbot.utilities.Utilities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -10,7 +11,8 @@ import lombok.Data;
 @Entity
 @Table(name = "photocards")
 @Data
-public class PhotoCard {
+public class
+PhotoCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -105,6 +107,20 @@ public class PhotoCard {
         this.type = type;
         this.type2 = type2;
         this.user = user;
+    }
+
+    public PhotoCard(CustomPhotoDTO customCardDTO) {
+        this.idolID = customCardDTO.getIdolId();
+        this.name = customCardDTO.getName();
+        this.fullName = customCardDTO.getFullName();
+        this.band = customCardDTO.getBand();
+        this.photo = customCardDTO.getPhoto();
+        this.type = customCardDTO.getType();
+        this.type2 = customCardDTO.getType2();
+        this.hp = customCardDTO.getHp();
+        this.defense = customCardDTO.getDefense();
+        this.attack = customCardDTO.getAttack();
+        this.popularity = customCardDTO.getPopularity();
     }
 
     @Override

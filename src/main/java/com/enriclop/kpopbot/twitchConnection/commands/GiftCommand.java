@@ -36,6 +36,8 @@ public class GiftCommand extends Command {
             username = username.substring(1);
         }
 
+        username = username.toLowerCase();
+
         User receiver = connection.getUserService().getUserByUsername(username);
 
         if (receiver == null) {

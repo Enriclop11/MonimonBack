@@ -3,16 +3,16 @@ package com.enriclop.kpopbot.twitchConnection.rewards;
 import com.enriclop.kpopbot.twitchConnection.TwitchConnection;
 import com.github.twitch4j.pubsub.events.RewardRedeemedEvent;
 
-import static com.enriclop.kpopbot.enums.Pokeballs.POKEBALL;
+import static com.enriclop.kpopbot.enums.Pokeballs.MASTERBALL;
 
-public class CatchReward extends Reward {
+public class SuperCatchReward extends Reward{
 
-    public CatchReward() {
+    public SuperCatchReward() {
         super(
-                "Catch",
-                "catch",
-                10,
-                true,
+                "SuperCatch",
+                "SuperCatch",
+                1000,
+                false,
                 false,
                 0
         );
@@ -20,7 +20,7 @@ public class CatchReward extends Reward {
 
     @Override
     public void execute(TwitchConnection connection, RewardRedeemedEvent event) {
-        if(!connection.catchPokemon(event.getRedemption().getUser().getId(), POKEBALL)) {
+        if(!connection.catchPokemon(event.getRedemption().getUser().getId(), MASTERBALL)) {
             returnReedemption(connection, event);
         }
     }

@@ -66,7 +66,7 @@ public class UserController {
 
     public void reOrderUserCards(User user) {
         List<PhotoCard> cards = user.getPhotoCards();
-        cards.sort((c1, c2) -> c1.getId().compareTo(c2.getId()));
+        cards.sort((c1, c2) -> c2.getId().compareTo(c1.getId()));
         user.setPhotoCards(cards);
         userService.saveUser(user);
     }
@@ -144,8 +144,6 @@ public class UserController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-        log.info("Response: " + response.getBody());
-
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode root = objectMapper.readTree(response.getBody());
@@ -183,5 +181,61 @@ public class UserController {
 
     static class TwitchLoginDTO {
         public String code;
+    }
+
+    @PostMapping("/linkDiscord")
+    public void linkDiscord(@RequestHeader("Authorization") String token, @RequestBody LinkDiscordDTO linkDiscordDTO) {
+        User user = userService.getUserByToken(token);
+
+        String url = "https://discord.com/api/oauth2/token";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/x-www-form-urlencoded");
+        headers.setBasicAuth(settings.getDiscordClientId(), settings.getDiscordClientSecret());
+        String body = "grant_type=authorization_code&code=" + linkDiscordDTO.discordCode + "&redirect_uri=" + linkDiscordDTO.redirectUri;
+        HttpEntity<String> entity = new HttpEntity<>(body, headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<AccessTokenDiscord> response = restTemplate.postForEntity(url, entity, AccessTokenDiscord.class);
+
+        AccessTokenDiscord accessTokenDiscord = response.getBody();
+        if (accessTokenDiscord != null) {
+
+            String urlUser = "https://discord.com/api/users/@me";
+            HttpHeaders headersUser = new HttpHeaders();
+            headersUser.set("Authorization", "Bearer " + accessTokenDiscord.access_token);
+            HttpEntity<String> entityUser = new HttpEntity<>(headersUser);
+            ResponseEntity<UserDataDiscord> responseUser = restTemplate.exchange(urlUser, HttpMethod.GET, entityUser, UserDataDiscord.class);
+            UserDataDiscord dataDiscord = responseUser.getBody();
+            if (dataDiscord != null) {
+                user.setDcUsername(dataDiscord.id);
+                userService.saveUser(user);
+                log.info("Linked Discord user " + dataDiscord.id + " to user " + user.getUsername());
+            }
+        }
+    }
+
+    static class LinkDiscordDTO {
+        public String discordCode;
+        public String redirectUri;
+    }
+
+    static class AccessTokenDiscord {
+        public String access_token;
+        public String token_type;
+        public String expires_in;
+        public String refresh_token;
+        public String scope;
+    }
+
+
+    static class UserDataDiscord {
+        public String id;
+    }
+
+    @GetMapping("/unlinkDiscord")
+    public void unlinkDiscord(@RequestHeader("Authorization") String token) {
+        User user = userService.getUserByToken(token);
+        user.setDcUsername(null);
+        userService.saveUser(user);
     }
 }

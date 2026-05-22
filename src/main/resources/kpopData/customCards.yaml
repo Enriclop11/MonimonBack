@@ -1,0 +1,61 @@
+customCards:
+  - id: "pablomotos1"
+    name: "Pablo Motos"
+    band: "Club Pétalos"
+    hp: 10
+    defense: 10
+    attack: 10
+    type: VISUAL
+    type2: NONE
+    idolId: 0
+    photo: "https://pbs.twimg.com/media/FSK9jQ2XsAEst7g?format=jpg&name=small"
+    fullName: "Pablo Motos"
+    popularity: 0
+  - id: "pablomotos2"
+    name: "Pablo Motos"
+    band: "Club Pétalos"
+    hp: 10
+    defense: 10
+    attack: 10
+    type: VISUAL
+    type2: NONE
+    idolId: 0
+    photo: "https://img.imgur.com/F65aj4N.jpg"
+    fullName: "Pablo Motos"
+    popularity: 0
+  - id: "pablomotos3"
+    name: "Pablo Motos"
+    band: "Club Pétalos"
+    hp: 10
+    defense: 10
+    attack: 10
+    type: VISUAL
+    type2: NONE
+    idolId: 0
+    photo: "https://theriagames.com/wp-content/uploads/2025/02/Goblin_2.webp"
+    fullName: "Pablo Motos"
+    popularity: 0
+  - id: "pablomotos4"
+    name: "Pablo Motos"
+    band: "Club Pétalos"
+    hp: 10
+    defense: 10
+    attack: 10
+    type: VISUAL
+    type2: NONE
+    idolId: 0
+    photo: "https://raw.githubusercontent.com/Enriclop11/PhotoRepository/refs/heads/main/sus/sus_20.png"
+    fullName: "Pablo Motos"
+    popularity: 0
+  - id: "pablomotos5"
+    name: "Hideo Kojimba"
+    band: "Club Pies"
+    hp: 50
+    defense: 50
+    attack: 50
+    type: VISUAL
+    type2: CENTER
+    idolId: 0
+    photo: "https://raw.githubusercontent.com/Enriclop11/PhotoRepository/refs/heads/main/sus/kojimba.jpg"
+    fullName: "Feetman"
+    popularity: 0
